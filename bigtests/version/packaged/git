@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "NO"
+
+exit 1
