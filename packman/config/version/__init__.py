@@ -1,5 +1,8 @@
 from ..base import BaseConfig
 
+import pbr.packaging
+
+from .file import file_version_generator
 from .fixed import fixed_version_generator
 from .git_pep440 import git_pep440_version_generator
 
@@ -16,6 +19,21 @@ class VersionConfig(BaseConfig):
         """
         :param dict config:
         """
+
+        version = pbr.packaging._get_version_from_pkg_info(
+            config['metadata']['name'])
+
+        if not version:
+            version = self._get_version_using_strategy(
+                config,
+                facility_section_name)
+
+        if not version:
+            raise ValueError('Cannot find any version number!')
+
+        config['metadata']['version'] = version
+
+    def _get_version_using_strategy(self, config, facility_section_name):
         version_config_section = config.get(facility_section_name, {})
 
         try:
@@ -34,14 +52,16 @@ class VersionConfig(BaseConfig):
             raise ValueError('Oh no! Unknown version strategy!')
 
         # TODO: USE ENUM!!!
-        config['metadata']['version'] = version_strategy(version_value)
+        return version_strategy(version_value)
 
     def add_version_strategy(self, name, strategy, default=False):
         self._registry[name] = strategy
         if default:
             self._default_version_strategy = strategy
 
+
 version_config = VersionConfig()
 
-version_config.add_version_strategy('git-pep440', git_pep440_version_generator, default=True)
+version_config.add_version_strategy('file', file_version_generator)
 version_config.add_version_strategy('fixed', fixed_version_generator)
+version_config.add_version_strategy('git-pep440', git_pep440_version_generator, default=True)
