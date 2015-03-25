@@ -5,6 +5,7 @@ import pbr.packaging
 from .file import file_version_generator
 from .fixed import fixed_version_generator
 from .git_pep440 import git_pep440_version_generator
+from .shell import shell_version_generator
 
 
 class VersionConfig(BaseConfig):
@@ -65,3 +66,4 @@ version_config = VersionConfig()
 version_config.add_version_strategy('file', file_version_generator)
 version_config.add_version_strategy('fixed', fixed_version_generator)
 version_config.add_version_strategy('git-pep440', git_pep440_version_generator, default=True)
+version_config.add_version_strategy('shell', shell_version_generator)
