@@ -1,6 +1,6 @@
 from setuptools import setup
 
-from pbr.util import cfg_to_args
+from packman.core import setup_kwargs
 
 
-setup(**cfg_to_args())
+setup(**setup_kwargs())
