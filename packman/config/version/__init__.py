@@ -52,7 +52,8 @@ class VersionConfig(BaseConfig):
         except KeyError:
             raise ValueError('Oh no! Unknown version strategy!')
 
-        # TODO: USE ENUM!!!
+        # TODO: deal gracefully with failed attempts, with a nice error message.
+        # (e.g. no git binary, file doesn't exist, etc)
         return version_strategy(version_value)
 
     def add_version_strategy(self, name, strategy, default=False):

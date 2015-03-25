@@ -40,13 +40,11 @@ def git_pep440_version_generator(template):
 
 
 def call_git(*params):
-    try:
-        p = Popen(('git', ) + params, stdout=PIPE, stderr=PIPE)
-        p.stderr.close()
-        line = p.stdout.readlines()[0]
-        return line.strip().decode('utf-8')
-    except:
-        pass
+    # Might throw OSError if git isn't on the path.
+    p = Popen(('git', ) + params, stdout=PIPE)
+    line = p.stdout.readlines()[0]
+    p.wait()
+    return line.strip().decode('utf-8')
 
 
 def call_git_describe():
