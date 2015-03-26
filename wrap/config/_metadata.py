@@ -1,6 +1,6 @@
 from pbr import packaging
 
-from packman.config.base import BaseConfig
+from wrap.config.base import BaseConfig
 
 
 class MetadataConfig(BaseConfig):

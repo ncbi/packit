@@ -59,7 +59,7 @@ class VersionConfig(BaseConfig):
     def add_version_strategy(self, name, strategy, default=False):
         self._registry[name] = strategy
         if default:
-            self._default_version_strategy = strategy
+            self._default_version_strategy = name
 
 
 version_config = VersionConfig()

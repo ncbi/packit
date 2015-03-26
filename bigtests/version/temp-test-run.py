@@ -1,4 +1,4 @@
-import packman.config.version as v
+import wrap.config.version as v
 import os.path
 try:
     from ConfigParser import SafeConfigParser as ConfigParser

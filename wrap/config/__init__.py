@@ -2,9 +2,10 @@ from .base import BaseConfig
 
 from .version import version_config
 from .license import license_config
+from .packages import packages_config
 
 
-class PackmanFacilities(object):
+class WrapFacilities(object):
 
     def __init__(self, config_section_name):
         self._default = set()
@@ -17,7 +18,7 @@ class PackmanFacilities(object):
             self._default.add(name)
 
     def get_enabled_facilities(self, config):
-        facilities_section = config.get(self._config_section_name)
+        facilities_section = config.get(self._config_section_name, {})
 
         enabled_facilities = set()
         for facility_name in self._registry:
@@ -48,8 +49,9 @@ class PackmanFacilities(object):
 
         return option_dict[option_name].lower() in true_values
 
-packman_facilities = PackmanFacilities('facilities')
+wrap_facilities = WrapFacilities('facilities')
 
 
-packman_facilities.add_facility('auto-version', version_config, default=True)
-packman_facilities.add_facility('auto-license', license_config, default=True)
+wrap_facilities.add_facility('auto-version', version_config, default=True)
+wrap_facilities.add_facility('auto-license', license_config, default=True)
+wrap_facilities.add_facility('packages-config', packages_config, default=True)
