@@ -1,9 +1,10 @@
 from setuptools import setup
-
 import os
 
+
 # For this test, we will use our own "git" that's just a script.
-os.putenv('PATH', '.:' + os.getenv('PATH'))
+os.environ['PATH'] = '.:' + os.environ['PATH']
+
 
 setup(
     setup_requires=['packman'],

@@ -1,3 +1,6 @@
 #!/bin/sh -e
+source ../../assert.sh
 
-test "x`python setup.py --version`" == 'x2.22.2'
+assert "python setup.py --version" 2.22.2
+
+assert_end version/shell
