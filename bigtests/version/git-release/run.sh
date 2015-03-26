@@ -1,3 +1,6 @@
 #!/bin/sh -e
+source ../../assert.sh
 
-test x`python setup.py --version` == x'1.3.3'
+assert "python setup.py --version" 1.3.3
+
+assert_end version/git-release
