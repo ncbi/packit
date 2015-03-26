@@ -21,8 +21,11 @@ class PackmanFacilities(object):
 
         enabled_facilities = set()
         for facility_name in self._registry:
+            is_enabled = None
+
             # if facility explicitly disabled in facilities config then we force it off
-            is_enabled = self._is_facility_enabled(facilities_section, facility_name)
+            if facilities_section:
+                is_enabled = self._is_facility_enabled(facilities_section, facility_name)
 
             if is_enabled is None:  # facility config not provided
                 # check whether facility config section present or facility is enabled by default
