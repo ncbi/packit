@@ -1,15 +1,15 @@
-from .base import BaseConfig
+from collections import OrderedDict
 
 from .version import version_config
-from .license import license_config
 from .packages import packages_config
+from .dependencies import pbr_backport
 
 
-class WrapFacilities(object):
+class PackmanFacilities(object):
 
     def __init__(self, config_section_name):
         self._default = set()
-        self._registry = {}
+        self._registry = OrderedDict()
         self._config_section_name = config_section_name
 
     def add_facility(self, name, target, default=False):
@@ -37,7 +37,7 @@ class WrapFacilities(object):
 
         # TODO: check for unrecognized sections and/or facilities
 
-        return {k: v for k, v in self._registry.items() if k in enabled_facilities}
+        return OrderedDict((k, v) for k, v in self._registry.items() if k in enabled_facilities)
 
     @staticmethod
     def _is_facility_enabled(option_dict, option_name, true_values=('1', 'yes', 'y', 'true', 't')):
@@ -49,9 +49,10 @@ class WrapFacilities(object):
 
         return option_dict[option_name].lower() in true_values
 
-wrap_facilities = WrapFacilities('facilities')
+packman_facilities = PackmanFacilities('facilities')
 
 
-wrap_facilities.add_facility('auto-version', version_config, default=True)
-wrap_facilities.add_facility('auto-license', license_config, default=True)
-wrap_facilities.add_facility('packages-config', packages_config, default=True)
+packman_facilities.add_facility('auto-version', version_config, default=True)
+packman_facilities.add_facility('auto-packages', packages_config, default=True)
+packman_facilities.add_facility('auto-dependencies', None, default=True)
+# wrap_facilities.add_facility('backport', pbr_backport, default=True)
