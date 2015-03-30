@@ -1,15 +1,9 @@
 from pbr.core import pbr
+from pbr import pbr_json
 
 
 def packman(dist, attr, value):
+    if value:
+        pbr_json.write_pbr_json = lambda *a, **k: None
+
     pbr(dist, attr, value)
-
-
-# additional_files = set()
-#
-#
-# def list_files(dir_name):
-#     return additional_files
-
-# setuptools.file_finders =
-#     wrap = wrap.core:list_files
