@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from .version import version_config
 from .packages import packages_config
-from .dependencies import pbr_backport
+from .dependencies import dependencies_config
 
 
 class PackmanFacilities(object):
@@ -54,5 +54,4 @@ packman_facilities = PackmanFacilities('facilities')
 
 packman_facilities.add_facility('auto-version', version_config, default=True)
 packman_facilities.add_facility('auto-packages', packages_config, default=True)
-packman_facilities.add_facility('auto-dependencies', None, default=True)
-# wrap_facilities.add_facility('backport', pbr_backport, default=True)
+packman_facilities.add_facility('auto-dependencies', dependencies_config, default=True)
