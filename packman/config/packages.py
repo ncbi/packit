@@ -7,7 +7,7 @@ from .base import BaseConfig
 
 class PackageConfig(BaseConfig):
 
-    def __init__(self, default_include=(), default_exclude=('tests*', 'docs', '.tox', 'env')):
+    def __init__(self, default_include=(), default_exclude=('test*', 'docs', '.tox', 'env')):
         self._default_include = default_include
         self._default_exclude = default_exclude
 

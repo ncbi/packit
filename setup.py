@@ -3,9 +3,11 @@ from setuptools import setup, find_packages
 
 setup(name="ncbi-packman",
       packages=find_packages(),
+      namespace_packages=['packman'],
       version='0.1a',
       entry_points={
-          'distutils.setup_keywords': ['packman = packman.core:packman']
+          'distutils.setup_keywords': ['packman = packman.core:packman'],
       },
-      install_requires=['pbr'],
+      install_requires=['pbr', 'ncbi-packman-extra'],
+      zip_safe=False
 )
