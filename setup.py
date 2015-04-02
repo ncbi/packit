@@ -7,7 +7,8 @@ setup(name="ncbi-packman",
       version='0.1a',
       entry_points={
           'distutils.setup_keywords': ['packman = packman.core:packman'],
+          'setuptools.file_finders': ['packman_extra_files = packman_extra.additional_files:list_files'],
       },
-      install_requires=['pbr', 'ncbi-packman-extra'],
-      zip_safe=False
+      install_requires=['pbr'],
+      zip_safe=False,
 )
