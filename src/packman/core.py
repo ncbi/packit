@@ -1,18 +1,15 @@
-from pbr import hooks, util
+from pbr import hooks, pbr_json
 from pbr.core import pbr
 
 from .hooks import setup_hook
 
 
-def _patch_pbr():
+def packman(dist, attr, value):
+    if not value:
+        return
+
     hooks.setup_hook = setup_hook
     # Disabling annoying pbr.json
     pbr_json.write_pbr_json = lambda *a, **k: None
 
-
-def packman(dist, attr, value):
-    if value:
-        _patch_pbr()
-
     pbr(dist, attr, value)
-
