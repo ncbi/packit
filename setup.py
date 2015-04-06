@@ -14,4 +14,5 @@ setup(name="ncbi-packman",
           'pbr==0.10.8'
       ],
       zip_safe=False,
+      license='NCBI license',
 )
