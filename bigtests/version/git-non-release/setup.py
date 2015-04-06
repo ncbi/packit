@@ -7,5 +7,5 @@ os.environ['PATH'] = '.:' + os.environ['PATH']
 
 
 setup(
-    setup_requires=['packman'],
+    setup_requires=['ncbi-packman'],
     packman=True)
