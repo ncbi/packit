@@ -6,5 +6,5 @@ import os
 os.putenv('PATH', '.:' + os.getenv('PATH'))
 
 setup(
-    setup_requires=['ncbi-packman'],
-    packman=True)
+    setup_requires=['packit'],
+    packit=True)

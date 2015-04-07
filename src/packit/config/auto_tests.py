@@ -16,7 +16,7 @@ class AutoTestsConfig(BaseConfig):
     def __call__(self, config, facility_section_name):
         global_config = config.setdefault('global', {})
         current_commands = global_config.get('commands', '')
-        global_config['commands'] = '\n'.join(['packman.commands.packman_test.PackmanTest', current_commands])
+        global_config['commands'] = '\n'.join(['packit.commands.packit_test.PackitTest', current_commands])
 
         backwards_compat_config = config.setdefault('backwards_compat', {})
         packaging.append_text_list(backwards_compat_config, 'tests_require', self.requirements)

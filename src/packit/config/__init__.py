@@ -7,7 +7,7 @@ from .extra_files import extra_files_config
 from .auto_tests import auto_tests_config
 
 
-class PackmanFacilities(object):
+class PackitFacilities(object):
 
     def __init__(self, config_section_name):
         self._default = set()
@@ -51,11 +51,11 @@ class PackmanFacilities(object):
 
         return option_dict[option_name].lower() in true_values
 
-packman_facilities = PackmanFacilities('facilities')
+packit_facilities = PackitFacilities('facilities')
 
 
-packman_facilities.add_facility('auto-version', version_config, default=True)
-packman_facilities.add_facility('auto-dependencies', dependencies_config, default=True)
-packman_facilities.add_facility('auto-packages', packages_config, default=True)
-packman_facilities.add_facility('auto-package-data', extra_files_config, default=True)
-packman_facilities.add_facility('auto-tests', auto_tests_config, default=True)
+packit_facilities.add_facility('auto-version', version_config, default=True)
+packit_facilities.add_facility('auto-dependencies', dependencies_config, default=True)
+packit_facilities.add_facility('auto-packages', packages_config, default=True)
+packit_facilities.add_facility('auto-package-data', extra_files_config, default=True)
+packit_facilities.add_facility('auto-tests', auto_tests_config, default=True)

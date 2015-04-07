@@ -2,7 +2,7 @@ import os
 
 from pbr.git import _find_git_files
 
-from packman.additional_files import additional_files
+from packit.additional_files import additional_files
 from .base import BaseConfig
 
 

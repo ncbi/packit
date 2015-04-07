@@ -3,7 +3,7 @@ import os
 from setuptools.command.test import test as TestCommand
 
 
-class PackmanTest(TestCommand):
+class PackitTest(TestCommand):
     command_name = 'test'
 
     user_options = [

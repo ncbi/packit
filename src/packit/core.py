@@ -4,7 +4,7 @@ from pbr.core import pbr
 from .hooks import setup_hook
 
 
-def packman(dist, attr, value):
+def packit(dist, attr, value):
     if not value:
         return
 

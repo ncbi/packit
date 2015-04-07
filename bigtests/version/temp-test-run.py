@@ -1,5 +1,5 @@
-import packman.config.version as v
-import os.path
+import packit.config.version as v
+
 try:
     from ConfigParser import SafeConfigParser as ConfigParser
 except ImportError:
@@ -9,7 +9,7 @@ config = ConfigParser()
 config.read('setup.cfg')
 config = dict(config._sections)
 
-#config = {'auto-version': {'type': 'git-pep440'}, 'metadata': {'name': 'test-pkg'}}
+
 v.version_config(config, 'auto-version')
 
 import pprint
