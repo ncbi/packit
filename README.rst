@@ -21,20 +21,15 @@ interface. None of `pbr`_ functions are exposed but instead PacKit provides its 
 Available facilities
 ^^^^^^^^^^^^^^^^^^^^
 
-**auto-version**
- Set package version depending on selected versioning strategy.
+- **auto-version** - set package version depending on selected versioning strategy.
     
-**auto-dependencies**
- Populate *install_requires* and *test_requires* from requirement files
+- **auto-dependencies** - populate *install_requires* and *test_requires* from requirement files
     
-**auto-packages**
- Discover packages to include in distribution.
+- **auto-packages** - discover packages to include in distribution.
     
-**auto-package-data**
- Include all files tracked by *git* from package dirs only. 
+- **auto-package-data** - include all files tracked by *git* from package dirs only. 
     
-**auto-tests**
- Run tests with *tox* or *pytest* (depending on *tox.ini* presence) on *python setup.py test*
+- **auto-tests** - run tests with *tox* or *pytest* (depending on *tox.ini* presence) on *python setup.py test*
 
 
 It's a brief overview of currently implemented facilities and the list will be extended as new ones will be added.
@@ -42,17 +37,13 @@ It's a brief overview of currently implemented facilities and the list will be e
 Planned facilities
 ^^^^^^^^^^^^^^^^^^
 
-**auto-plate**
- Integration with `platter`_
+- **auto-plate** - integration with `platter`_
     
-**auto-pup8**
- Produce style-check reports
+- **auto-pup8** - produce style-check reports
     
-**auto-docs**
- Docs generation
+- **auto-docs** - docs generation
     
-**auto-coverage** (?)
- Produce coverage reports while running tests
+- **auto-coverage** (?)- produce coverage reports while running tests
     
 If you don't see desired facilities or how cool features in mind feel free to contact us and tell about your ideas.
 
@@ -61,15 +52,17 @@ Usage
 -----
 
 Create a *setup.py* in your project dir:
+::
 
-        from setuptools import setup
-        
-        setup(setup_requires='packit', packit=True)
+    from setuptools import setup
+
+    
+    setup(setup_requires='packit', packit=True)
 
 That was the first and the last time you touched that file for your project.
 
 Not let's create a *setup.cfg* that you will use in order to configure your package:
-
+::
 
     [metadata]
     name = cool-package
@@ -83,6 +76,7 @@ Facilities
 
 Currently all available facilities are enabled by default. Though you can easily turn them off by using *[facilities]*
 section in your *setup.cfg*:
+::
 
     [facilities]
     auto-version = 0
@@ -197,6 +191,7 @@ If *include* not provided, *auto-packages* will try the following steps in order
 exclude *value*. *This packages also will be included into the resulting list of packages.*
 
 Once *include* value is determined, the resulting packages list will be generated using following algorithm:
+::
 
     for path in include:
         found_packages |= set(find_packages(path, exclude))
@@ -207,6 +202,7 @@ When enabled:
  1. Includes all files from packages' dirs tracked by git to distribution
  2. Allows you to specify extra files to be included in distribution in *setup.cfg* using *extra_files* under
     *[files]* section like:
+::
 
     [files]
     extra_files = 
