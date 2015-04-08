@@ -61,7 +61,7 @@ Create a *setup.py* in your project dir:
 
 That was the first and the last time you touched that file for your project.
 
-Not let's create a *setup.cfg* that you will use in order to configure your package:
+Now let's create a *setup.cfg* that you will use in order to configure your package:
 ::
 
     [metadata]
