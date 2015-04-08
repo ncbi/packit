@@ -74,7 +74,7 @@ section below.
 Facilities
 ----------
 
-Currently all available facilities are enabled by default. Though you can easily turn them off by using *\[facilities\]*
+Currently all available facilities are enabled by default. Though you can easily turn them off by using *`[facilities]`*
 section in your *setup.cfg*:
 ::
 
@@ -94,7 +94,7 @@ auto-version
 ^^^^^^^^^^^^
 Whe enabled will generate and set package version according to selected versioning strategy.
 
-Versioning strategy could be selected using *type* field under *\[auto-version\]* section within *setup.cfg*.
+Versioning strategy could be selected using *type* field under *`[auto-version]`* section within *setup.cfg*.
 The default version strategy is *git-pep440*.
 
 git-pep440
@@ -127,17 +127,17 @@ Example:
 
 fixed
 """""
-Use value specified in *value* (it's required when this strategy is used) under *\[auto-version\]* section in
+Use value specified in *value* (it's required when this strategy is used) under *`[auto-version]`* section in
 *setup.cfg*.
 
 file
 """"
 Read a line using UTF-8 encoding from the file specified in *value* (it's required when this strategy is used) under
-*\[auto-version\]* section in *setup.cfg*, strip it and use as a version.
+*`[auto-version]`* section in *setup.cfg*, strip it and use as a version.
 
 shell
 """""
-Execute command specified in *value* (it's required when this strategy is used) under *\[auto-version\]* section in
+Execute command specified in *value* (it's required when this strategy is used) under *`[auto-version]`* section in
 *setup.cfg*, read a line from *stdout*, strip it and use as a version
 
 auto-dependencies
@@ -175,7 +175,7 @@ installation.
 
 auto-packages
 ^^^^^^^^^^^^^
-When enabled and no packages provided in *setup.cfg* through *packages* option under *\[files\]* section will try to
+When enabled and no packages provided in *setup.cfg* through *packages* option under *`[files]`* section will try to
 automatically find out all packages in current dir recursively.
  
 It operates using *exclude* and *include* values that can be specified under *auto-packages* section within
@@ -185,7 +185,7 @@ If *exclude* not provided the following defaults will be used: *test**, *docs*, 
 
 If *include* not provided, *auto-packages* will try the following steps in order to generate it:
 
-1. If *packages_root* value provided under *\[files\\]* section in *setup.cfg*, it will be used.
+1. If *packages_root* value provided under *`[files]`* section in *setup.cfg*, it will be used.
 
 2. Otherwise the current working dir will be scanned for any python packages (dirs with __init__.py) while honoring
 exclude *value*. *This packages also will be included into the resulting list of packages.*
@@ -201,7 +201,7 @@ auto-package-data
 When enabled:
  1. Includes all files from packages' dirs tracked by git to distribution
  2. Allows you to specify extra files to be included in distribution in *setup.cfg* using *extra_files* under
-    *\[files\]* section like:
+    *`[files]`* section like:
 ::
 
     [files]
