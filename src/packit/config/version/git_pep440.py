@@ -55,6 +55,10 @@ def parse_git_describe(description):
     description_tokens = description.rsplit('-', 2)
     tag, distance, hash_val = (description_tokens + ['']*2)[:3]
 
+    allowed_suffixes = ['a', 'b', 'c', 'post', 'dev']
+    if distance and not any(tag.endswith(suffix) for suffix in allowed_suffixes):
+        tag += '.post'
+
     hash_val = hash_val[1:]
 
     return dict(tag=tag, distance=distance, hash=hash_val)
