@@ -15,6 +15,7 @@ class PackageConfig(BaseConfig):
         self_config = config.get(facility_section_name, {})
         files_config = config.setdefault('files', {})
 
+        root = files_config.get('packages_root', '')
         packages = files_config.get('packages', '').strip()
 
         if packages:
@@ -26,8 +27,11 @@ class PackageConfig(BaseConfig):
         found_packages = set()
 
         if not include:
-            include = self._smart_default_include(exclude)
-            found_packages |= include
+            if root:
+                include = [root]
+            else:
+                include = self._smart_default_include(exclude)
+                found_packages |= include
 
         for path in include:
             found_packages |= set(find_packages(path, exclude))
