@@ -48,8 +48,9 @@ class DependenciesConfig(BaseConfig):
     @staticmethod
     def _combine(files, extensions):
         for filename in files:
+            normalized_path = os.path.join(*filename.split('/'))
             for ext in extensions:
-                yield filename + ext
+                yield normalized_path + ext
 
     @staticmethod
     def _is_file_exists(path):
