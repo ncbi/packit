@@ -54,9 +54,9 @@ Usage
 Create a *setup.py* in your project dir:
 ::
 
-  from setuptools import setup
-
-  setup(setup_requires='packit', packit=True)
+    from setuptools import setup
+    
+    setup(setup_requires='packit', packit=True)
 
 
 That was the first and the last time you touched that file for your project.
@@ -64,8 +64,8 @@ That was the first and the last time you touched that file for your project.
 Not let's create a *setup.cfg* that you will use in order to configure your package:
 ::
 
-  [metadata]
-  name = cool-package
+    [metadata]
+    name = cool-package
 
 
 And... if you're not doing anything tricky in your package then that's enough! And if you do, take a look at the
@@ -79,12 +79,12 @@ Currently all available facilities are enabled by default. Though you can easily
 section in your *setup.cfg*:
 ::
 
-  [facilities]
-  auto-version = 0
-  auto-dependencies = f
-  auto-packages = false
-  auto-package-data = n
-  auto-tests = no
+    [facilities]
+    auto-version = 0
+    auto-dependencies = f
+    auto-packages = false
+    auto-package-data = n
+    auto-tests = no
 
 
 If facility is explicitly disabled it won't be used even if facility-specific configuration section is present. 
@@ -195,8 +195,8 @@ exclude *value*. *This packages also will be included into the resulting list of
 Once *include* value is determined, the resulting packages list will be generated using following algorithm:
 ::
 
-  for path in include:
-      found_packages = set(find_packages(path, exclude))
+    for path in include:
+        found_packages |= set(find_packages(path, exclude))
 
 
 auto-package-data
@@ -207,11 +207,11 @@ When enabled:
     *files* section like:
 ::
 
-  [files]
-  extra_files = 
-    LICENSE.txt
-    hints.txt
-    some/stuff/lib.so
+    [files]
+    extra_files = 
+        LICENSE.txt
+        hints.txt
+        some/stuff/lib.so
 
 auto-tests
 ^^^^^^^^^^
