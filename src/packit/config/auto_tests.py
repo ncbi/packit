@@ -7,9 +7,6 @@ class AutoTestsConfig(BaseConfig):
     requirements = [
         'tox>=1.9.2',
         'pytest>=2.7.0',
-        'pytest-cov>=1.8.1',
-        'pytest-xdist>=1.11',
-        'coverage>=3.7.1,<4',
         'teamcity-messages>=1.12',
     ]
 

@@ -35,6 +35,5 @@ class PackitTest(TestCommand):
 
     def _run_pytest(self):
         import pytest
-
         pytest.main(self.pytest_args)
 
