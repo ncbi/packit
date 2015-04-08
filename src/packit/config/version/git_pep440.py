@@ -53,6 +53,8 @@ def call_git_describe():
 
 def parse_git_describe(description):
     description_tokens = description.rsplit('-', 2)
-    tag, distance, hash = (description_tokens + ['']*2)[:3]
+    tag, distance, hash_val = (description_tokens + ['']*2)[:3]
 
-    return dict(tag=tag, distance=distance, hash=hash)
+    hash_val = hash_val[1:]
+
+    return dict(tag=tag, distance=distance, hash=hash_val)
