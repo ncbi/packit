@@ -51,19 +51,22 @@ If you don't see desired facilities or how cool features in mind feel free to co
 Usage
 -----
 
-Create a *setup.py* in your project dir::
+Create a *setup.py* in your project dir:
 
-    from setuptools import setup
+.. code::
 
-    
-    setup(setup_requires='packit', packit=True)
+  from setuptools import setup
+
+  setup(setup_requires='packit', packit=True)
 
 That was the first and the last time you touched that file for your project.
 
-Not let's create a *setup.cfg* that you will use in order to configure your package::
+Not let's create a *setup.cfg* that you will use in order to configure your package:
 
-    [metadata]
-    name = cool-package
+.. code::
+
+  [metadata]
+  name = cool-package
 
 And... if you're not doing anything tricky in your package then that's enough! And if you do, take a look at the
 section below.
@@ -73,14 +76,16 @@ Facilities
 ----------
 
 Currently all available facilities are enabled by default. Though you can easily turn them off by using *facilities*
-section in your *setup.cfg*::
+section in your *setup.cfg*:
 
-    [facilities]
-    auto-version = 0
-    auto-dependencies = f
-    auto-packages = false
-    auto-package-data = n
-    auto-tests = no
+.. code::
+
+  [facilities]
+  auto-version = 0
+  auto-dependencies = f
+  auto-packages = false
+  auto-package-data = n
+  auto-tests = no
 
 If facility is explicitly disabled it won't be used even if facility-specific configuration section is present. 
 
@@ -187,23 +192,27 @@ If *include* not provided, *auto-packages* will try the following steps in order
 2. Otherwise the current working dir will be scanned for any python packages (dirs with __init__.py) while honoring
 exclude *value*. *This packages also will be included into the resulting list of packages.*
 
-Once *include* value is determined, the resulting packages list will be generated using following algorithm::
+Once *include* value is determined, the resulting packages list will be generated using following algorithm:
 
-    for path in include:
-        found_packages |= set(find_packages(path, exclude))
+.. code::
+
+  for path in include:
+    found_packages |= set(find_packages(path, exclude))
 
 auto-package-data
 ^^^^^^^^^^^^^^^^^
 When enabled:
  1. Includes all files from packages' dirs tracked by git to distribution
  2. Allows you to specify extra files to be included in distribution in *setup.cfg* using *extra_files* under
-    *files* section like::
+    *files* section like:
+    
+.. code::
 
-    [files]
-    extra_files = 
-        LICENSE.txt
-        hints.txt
-        some/stuff/lib.so
+  [files]
+  extra_files = 
+      LICENSE.txt
+      hints.txt
+      some/stuff/lib.so
 
 auto-tests
 ^^^^^^^^^^
@@ -211,6 +220,7 @@ Has no additional configuration options [yet].
 
 When enabled, the *python setup.py test* is equal to running:
     - **tox** if *tox.ini* is present
+    
     - **pytest** with `pytest-gitignore`_ and `teamcity-messages`_ plugins enabled otherwise
 
 Further Development
