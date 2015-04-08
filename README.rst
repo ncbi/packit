@@ -104,8 +104,7 @@ git-pep440
 
 Generate `PEP440`_-compliant version from *git* tags. It's expected that you using git tags that follow
 `public version identifier`_ description and *git-pep440* will just append number of commits since tag was applied to 
-your tag value (the *N* in `public version identifier`_ description). The only exception is *post* release-segment - it
-will be added automatically if your tag is not ending in *a*, *b*, *c*, *post* or *dev*.
+your tag value (the *N* in `public version identifier`_ description).
 
 If number of commits since tag equal to 0 (your building the tagged version) the *N* value won't be appended. Otherwise,
 it will be appended and `local version identifier`_ equal to first 7 chars of commit hash will be also added.
