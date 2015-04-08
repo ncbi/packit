@@ -8,6 +8,7 @@ class AutoTestsConfig(BaseConfig):
         'tox>=1.9.2',
         'pytest>=2.7.0',
         'teamcity-messages>=1.12',
+        'pytest-gitignore==1.0',
     ]
 
     def __call__(self, config, facility_section_name):
