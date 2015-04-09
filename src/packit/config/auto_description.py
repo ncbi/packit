@@ -1,5 +1,6 @@
-from itertools import combinations
 import os
+from itertools import product
+
 from pbr import packaging
 
 from .base import BaseConfig
@@ -45,7 +46,7 @@ class AutoDescriptionConfig(BaseConfig):
         packaging.append_text_list(files_config, 'extra_files', [filename])
 
     def _find_readme_file(self, target_dir):
-        for filename, extension in combinations(self.KNOWN_FILENAMES, self.KNOWN_EXTENSIONS):
+        for filename, extension in product(self.KNOWN_FILENAMES, self.KNOWN_EXTENSIONS):
             path = os.path.join(target_dir, filename + extension)
             if os.path.exists(path) and os.path.isfile(path):
                 return path
