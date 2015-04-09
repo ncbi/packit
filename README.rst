@@ -4,14 +4,15 @@ PacKit
 Rationale
 ---------
 
-Creating python packages is routing operation that involves a lot of actions that could be automated. Although there are
+Creating python packages is routine operation that involves a lot of actions that could be automated. Although there are
 petty good tools like `pbr`_ for that purpose, they miss some features and
 lack flexibility by trying to enforce some strongly opinionated decisions upon you.
-PacKit tries to solve this by providing a simple and convenient though flexible way to create and build packages while
+PacKit tries to solve this by providing a simple, convenient, and flexible way to create and build packages while
 aiming for following goals:
- - simple declarative way to configure your package through *setup.cfg*  following  `distutils 2 setup.cfg syntax`_
- - reasonable defaults so the more common scenario the less configuration required
- - open for extension
+
+- simple declarative way to configure your package through *setup.cfg*  following  `distutils2 setup.cfg syntax`_
+- reasonable defaults so the more common scenario the less configuration required
+- open for extension
   
 Overview
 --------
@@ -20,6 +21,8 @@ interface. None of `pbr`_ functions are exposed but instead PacKit provides its 
   
 Available facilities
 ^^^^^^^^^^^^^^^^^^^^
+
+Here's a brief overview of currently implemented facilities and the list will be extended as new ones will be added.
 
 - **auto-version** - set package version depending on selected versioning strategy.
 
@@ -31,10 +34,8 @@ Available facilities
     
 - **auto-package-data** - include all files tracked by *git* from package dirs only. 
     
-- **auto-tests** - run tests with *tox* or *pytest* (depending on *tox.ini* presence) on *python setup.py test*
+- **auto-tests** - make ``python setup.py test`` run tests with *tox* or *pytest* (depending on *tox.ini* presence).
 
-
-It's a brief overview of currently implemented facilities and the list will be extended as new ones will be added.
 
 Planned facilities
 ^^^^^^^^^^^^^^^^^^
@@ -43,13 +44,13 @@ Planned facilities
 
 - **auto-license** - fill out license information
     
-- **auto-pup8** - produce style-check reports
+- **auto-pep8** - produce style-check reports
     
-- **auto-docs** - docs generation
+- **auto-docs** - API docs generation
     
 - **auto-coverage** (?) - produce coverage reports while running tests
     
-If you don't see desired facilities or how cool features in mind feel free to contact us and tell about your ideas.
+If you don't see desired facilities or have cool features in mind feel free to contact us and tell about your ideas.
 
 
 Usage
@@ -98,10 +99,14 @@ Facility-specific defaults and configuration options described below.
 
 auto-version
 ^^^^^^^^^^^^
-Whe enabled will generate and set package version according to selected versioning strategy.
+When enabled, ``auto-version`` will generate and set package version according to selected versioning strategy.
 
-Versioning strategy could be selected using *type* field under *auto-version* section within *setup.cfg*.
-The default version strategy is *git-pep440*.
+Versioning strategy can be selected using *type* field under *auto-version* section within *setup.cfg*.
+The default is:
+::
+
+    [auto-version]
+    type = git-pep440
 
 git-pep440
 """"""""""
@@ -133,12 +138,22 @@ Example:
 fixed
 """""
 Use value specified in *value* (it's required when this strategy is used) under *auto-version* section in
-*setup.cfg*.
+*setup.cfg*:
+::
+
+    [auto-version]
+    type = fixed
+    value = 3.3
 
 file
 """"
 Read a line using UTF-8 encoding from the file specified in *value* (it's required when this strategy is used) under
 *auto-version* section in *setup.cfg*, strip it and use as a version.
+::
+
+    [auto-version]
+    type = file
+    value = VERSION.txt
 
 shell
 """""
@@ -182,7 +197,7 @@ The license file will be included in package data.
 auto-dependencies
 ^^^^^^^^^^^^^^^^^
 When enabled will try to discover requirements files for installation and testing and populate *install_requires* and
-*test_requires* from them.
+*test_requires* from them.  Once a file is found, PacKit stops looking for more files.
 
 For installation requirements following paths will be tried:
 
@@ -210,7 +225,8 @@ For each path following extensions will be tried
 
 **You can use vcs project urls and/or archive urls/paths** as described in `pip usage`_ - they will be split in
 dependency links and package names during package creation and will be properly handled by pip/easyinstall during
-installation. 
+installation.   Remember that you can also make "includes" relationships between ``requirements.txt`` files by
+including a line like ``-r other-requires-file.txt``.
 
 auto-packages
 ^^^^^^^^^^^^^
@@ -270,7 +286,7 @@ Further Development
     
 
 .. _pbr: http://docs.openstack.org/developer/pbr/
-.. _distutils 2 setup.cfg syntax: http://alexis.notmyidea.org/distutils2/setupcfg.html
+.. _distutils2 setup.cfg syntax: http://alexis.notmyidea.org/distutils2/setupcfg.html
 .. _platter: http://platter.pocoo.org/
 .. _pytest-gitignore: https://pypi.python.org/pypi/pytest-gitignore/
 .. _teamcity-messages: https://pypi.python.org/pypi/teamcity-messages/
