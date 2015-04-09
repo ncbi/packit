@@ -2,9 +2,10 @@ from collections import OrderedDict
 
 from .version import version_config
 from .packages import packages_config
-from .dependencies import dependencies_config
-from .extra_files import extra_files_config
 from .auto_tests import auto_tests_config
+from .extra_files import extra_files_config
+from .dependencies import dependencies_config
+from .auto_description import auto_description_config
 
 
 class PackitFacilities(object):
@@ -55,6 +56,7 @@ packit_facilities = PackitFacilities('facilities')
 
 
 packit_facilities.add_facility('auto-version', version_config, default=True)
+packit_facilities.add_facility('auto-description', auto_description_config, default=True)
 packit_facilities.add_facility('auto-dependencies', dependencies_config, default=True)
 packit_facilities.add_facility('auto-packages', packages_config, default=True)
 packit_facilities.add_facility('auto-package-data', extra_files_config, default=True)
