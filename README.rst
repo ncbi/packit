@@ -22,6 +22,8 @@ Available facilities
 ^^^^^^^^^^^^^^^^^^^^
 
 - **auto-version** - set package version depending on selected versioning strategy.
+
+- **auto-description** - set package long description
     
 - **auto-dependencies** - populate *install_requires* and *test_requires* from requirement files
     
@@ -38,6 +40,8 @@ Planned facilities
 ^^^^^^^^^^^^^^^^^^
 
 - **auto-plate** - integration with `platter`_
+
+- **auto-license** - fill out license information
     
 - **auto-pup8** - produce style-check reports
     
@@ -140,6 +144,40 @@ shell
 """""
 Execute command specified in *value* (it's required when this strategy is used) under *auto-version* section in
 *setup.cfg*, read a line from *stdout*, strip it and use as a version
+
+auto-description
+^^^^^^^^^^^^^^^^
+Whe enabled will fill out *long_description* for package from a readme.
+
+The *readme* file name could be specified with *file* field under *auto-description* section.
+ 
+If no file name provided, it will be discovered automatically by trying following list of files:
+
+- README
+
+- readme
+
+- CHANGELOG
+
+- changelog
+
+Each of these files will be tried with following extensions:
+
+- <without extension>
+
+- .md
+
+- .markdown
+
+- .mkdn
+
+- .text
+
+- .rst
+
+- .txt
+
+The license file will be included in package data.
 
 auto-dependencies
 ^^^^^^^^^^^^^^^^^
