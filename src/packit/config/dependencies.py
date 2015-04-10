@@ -8,9 +8,11 @@ class DependenciesConfig(BaseConfig):
     requirements_base = [
         'requires',
         'requirements',
-        'requirements/base',
         'requirements/prod',
+        'requirements/release',
+        'requirements/install',
         'requirements/main',
+        'requirements/base',
     ]
 
     requirements_test = [
@@ -21,6 +23,7 @@ class DependenciesConfig(BaseConfig):
         'requirements_test',
         'requirements-test',
         'requirements/test',
+        'requirements/tests',
     ]
 
     requirements_extensions = [

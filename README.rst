@@ -240,9 +240,11 @@ For installation requirements following paths will be tried:
 
 - requires
 - requirements
-- requirements/base
 - requirements/prod
+- requirements/release
+- requirements/install
 - requirements/main
+- requirements/base
 
 For testing requirements following paths will be tried:
 
