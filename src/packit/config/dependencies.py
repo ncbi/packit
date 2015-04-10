@@ -32,17 +32,25 @@ class DependenciesConfig(BaseConfig):
         '.txt',
     ]
 
+    FIELD_INSTALL_REQUIRES = 'install'
+    FIELD_TEST_REQUIRES = 'test'
+
     def __call__(self, config, facility_section_name):
         metadata = config.setdefault('metadata', {})
         backwards_compat = config.setdefault('backwards_compat', {})
 
-        base_requirements = self._get_requirements(self.requirements_base)
-        test_requirements = self._get_requirements(self.requirements_test)
+        dependencies_facility_config = config.setdefault(facility_section_name, {})
 
-        packaging.append_text_list(metadata, 'requires_dist', packaging.parse_requirements(base_requirements))
+        install_requirements = self._get_requirements(dependencies_facility_config, self.FIELD_INSTALL_REQUIRES,
+                                                      self.requirements_base)
+
+        test_requirements = self._get_requirements(dependencies_facility_config, self.FIELD_TEST_REQUIRES,
+                                                   self.requirements_test)
+
+        packaging.append_text_list(metadata, 'requires_dist', packaging.parse_requirements(install_requirements))
         packaging.append_text_list(backwards_compat, 'tests_require', packaging.parse_requirements(test_requirements))
 
-        base_links = packaging.parse_dependency_links(base_requirements)
+        base_links = packaging.parse_dependency_links(install_requirements)
         test_links = packaging.parse_dependency_links(test_requirements)
 
         links = list(set(base_links + test_links))
@@ -59,7 +67,12 @@ class DependenciesConfig(BaseConfig):
     def _is_file_exists(path):
         return os.path.exists(path) and os.path.isfile(path)
 
-    def _get_requirements(self, files):
-        return filter(self._is_file_exists, self._combine(files, self.requirements_extensions))
+    def _get_requirements(self, config, field, lookup_files):
+        requirements = config.get(field)
+
+        if requirements:
+            return [requirements]
+
+        return filter(self._is_file_exists, self._combine(lookup_files, self.requirements_extensions))
 
 dependencies_config = DependenciesConfig()

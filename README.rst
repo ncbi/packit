@@ -232,9 +232,13 @@ The license file will be included in package data.
 auto-dependencies
 ^^^^^^^^^^^^^^^^^
 
-When enabled will try to discover requirements files for installation
-and testing and populate *install_requires* and *test_requires* from
-them.  Once a file is found, PacKit stops looking for more files.
+When enabled will fill *install_requires* and *test_requires* from requirement
+files.
+
+Requirement files could be specified by *install* and *test* fields under the
+*auto-dependencies* section of the *setup.cfg*.
+
+If requirements file names not provided then the facility will try to discover them automatically.
 
 For installation requirements following paths will be tried:
 
@@ -261,6 +265,8 @@ For each path following extensions will be tried
 - <without extension>
 - .pip
 - .txt
+
+Once a file is found, PacKit stops looking for more files.
 
 **You can use vcs project urls and/or archive urls/paths** as
 described in `pip usage`_ - they will be split in dependency links and
