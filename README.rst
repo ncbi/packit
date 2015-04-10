@@ -37,6 +37,8 @@ list will be extended as new ones will be added.
 
 - **auto-description** - set package long description
 
+- **auto-license** - include license file into distribution
+
 - **auto-dependencies** - populate *install_requires* and
   *test_requires* from requirement files
 
@@ -227,7 +229,37 @@ Each of these files will be tried with following extensions:
 
 - .txt
 
-The license file will be included in package data.
+The readme file will be included in the package data.
+
+auto-license
+^^^^^^^^^^^^
+
+When enabled will include the license file into the distribution.
+
+The license file name could be specified by the *file* field within *auto-license* section.
+
+If license file name is not provided the facility will try to discover it in the current dir
+trying following file names:
+
+- LICENSE
+
+- license
+
+Each of these files will be tried with following extensions:
+
+- <without extension>
+
+- .md
+
+- .markdown
+
+- .mkdn
+
+- .text
+
+- .rst
+
+- .txt
 
 auto-dependencies
 ^^^^^^^^^^^^^^^^^
