@@ -1,18 +1,27 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+from setuptools.dist import Distribution
 
 
-setup(name="packit",
-      packages=find_packages('src'),
-      package_dir={'': 'src'},
-      version='0.1a',
-      entry_points={
-          'distutils.setup_keywords': ['packit = packit.core:packit'],
-          'setuptools.file_finders': ['packit_extra_files = packit.additional_files:list_files'],
-      },
-      install_requires=[
-          'virtualenv>=12',
-          'pbr==0.10.8',
-      ],
-      zip_safe=False,
-      license='NCBI license',
-)
+class PacKitDist(Distribution):
+    def __init__(self, attrs=None):
+        self._packit_inited = False
+        Distribution.__init__(self, attrs)
+
+    def fetch_build_eggs(self, requires):
+        Distribution.fetch_build_eggs(self, requires)
+
+        if not self._packit_inited:
+            import sys
+            if 'src' not in sys.path:
+                sys.path.insert(0, 'src')
+
+            try:
+                from packit.core import patch_pbr
+                patch_pbr()
+            except ImportError:
+                pass
+            else:
+                self._packit_inited = True
+
+
+setup(distclass=PacKitDist, setup_requires=['pbr'], pbr=True)
