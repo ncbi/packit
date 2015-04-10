@@ -5,7 +5,7 @@ from .packages import packages_config
 from .auto_tests import auto_tests_config
 from .extra_files import extra_files_config
 from .dependencies import dependencies_config
-from .auto_description import auto_description_config
+from .description import auto_description_config
 
 
 class PackitFacilities(object):
