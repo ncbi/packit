@@ -1,4 +1,7 @@
+from itertools import chain
 import os
+from collections import deque
+
 from pbr import packaging
 
 from .base import BaseConfig
@@ -13,7 +16,7 @@ class DependenciesConfig(BaseConfig):
         'requirements/install',
         'requirements/main',
         'requirements/base',
-    ]
+        ]
 
     requirements_test = [
         'test-requires',
@@ -24,13 +27,13 @@ class DependenciesConfig(BaseConfig):
         'requirements-test',
         'requirements/test',
         'requirements/tests',
-    ]
+        ]
 
     requirements_extensions = [
         '',
         '.pip',
         '.txt',
-    ]
+        ]
 
     FIELD_INSTALL_REQUIRES = 'install'
     FIELD_TEST_REQUIRES = 'test'
@@ -56,6 +59,10 @@ class DependenciesConfig(BaseConfig):
         links = list(set(base_links + test_links))
         packaging.append_text_list(backwards_compat, 'dependency_links', links)
 
+        referenced_files = self._find_linked_requirements_files(chain(install_requirements, test_requirements))
+        files_config = config.setdefault('files', {})
+        packaging.append_text_list(files_config, 'extra_files', referenced_files)
+
     @staticmethod
     def _combine(files, extensions):
         for filename in files:
@@ -74,5 +81,25 @@ class DependenciesConfig(BaseConfig):
             return [requirements]
 
         return filter(self._is_file_exists, self._combine(lookup_files, self.requirements_extensions))
+
+    def _find_linked_requirements_files(self, entry_files):
+        result = set(entry_files)
+
+        queue = deque(entry_files)
+        while queue:
+            linked_files = self._get_linked_files(queue.popleft())
+            for filename in linked_files:
+                if filename not in result:
+                    result.add(filename)
+                    queue.append(filename)
+
+        return result
+
+    def _get_linked_files(self, filename):
+        with open(filename) as f:
+            lines = f.readlines()
+
+        return set(l.partition(' ')[2] for l in lines if l.startswith('-r'))
+
 
 dependencies_config = DependenciesConfig()
