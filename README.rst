@@ -345,7 +345,9 @@ auto-package-data
 
 When enabled:
 
-1. Includes all files from packages' dirs tracked by git to distribution
+1. If the *everything* option under the *auto-package-data* section is
+    set to true, behaves like `setuptools-git`_. Otherwise, includes all
+    files only from packages' dirs tracked by git to distribution.
 
 2. Allows you to specify extra files to be included in distribution in
    *setup.cfg* using *extra_files* under *files* section like:
@@ -383,6 +385,7 @@ Further Development
 .. _pbr: http://docs.openstack.org/developer/pbr/
 .. _distutils2 setup.cfg syntax: http://alexis.notmyidea.org/distutils2/setupcfg.html
 .. _platter: http://platter.pocoo.org/
+.. _setuptools-git: https://pypi.python.org/pypi/setuptools-git
 .. _pytest-gitignore: https://pypi.python.org/pypi/pytest-gitignore/
 .. _teamcity-messages: https://pypi.python.org/pypi/teamcity-messages/
 .. _pip usage: https://pip.pypa.io/en/latest/reference/pip_install.html#usage
