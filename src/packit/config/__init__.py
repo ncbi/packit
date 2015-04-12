@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+from packit.utils import parse_boolean
+
 from .version import version_config
 from .packages import packages_config
 from .auto_tests import auto_tests_config
@@ -44,14 +46,14 @@ class PackitFacilities(object):
         return OrderedDict((k, v) for k, v in self._registry.items() if k in enabled_facilities)
 
     @staticmethod
-    def _is_facility_enabled(option_dict, option_name, true_values=('1', 'yes', 'y', 'true', 't')):
+    def _is_facility_enabled(option_dict, option_name):
         """
         :return: True if explicitly enabled, False if explicitly disabled, None if no value provided
         """
         if option_name not in option_dict:
             return
 
-        return option_dict[option_name].lower() in true_values
+        return parse_boolean(option_dict[option_name])
 
 packit_facilities = PackitFacilities('facilities')
 
