@@ -44,6 +44,8 @@ list will be extended as new ones will be added.
 
 - **auto-packages** - discover packages to include in distribution.
 
+- **auto-extra-meta** - add useful options to the metadata config section
+
 - **auto-package-data** - include all files tracked by *git* from
   package dirs only.
 
@@ -338,6 +340,17 @@ be generated using following algorithm:
 
   for path in include:
       found_packages = set(find_packages(path, exclude))
+
+
+auto-extra-meta
+^^^^^^^^^^^^^^^
+
+When enabled, adds a number of additional options to 'metadata' section.
+
+Right now, only 1 extra option supported:
+
+- **is_pure** - allows you to override 'purity' flag for distribution, i.e.
+  you can explicitly say whether your distribution is platform-specific or no.
 
 
 auto-package-data

@@ -9,6 +9,7 @@ from .extra_files import extra_files_config
 from .dependencies import dependencies_config
 from .description import auto_description_config
 from .license import auto_license_config
+from .extra_meta import extra_meta_config
 
 
 class PackitFacilities(object):
@@ -65,3 +66,4 @@ packit_facilities.add_facility('auto-dependencies', dependencies_config, default
 packit_facilities.add_facility('auto-packages', packages_config, default=True)
 packit_facilities.add_facility('auto-package-data', extra_files_config, default=True)
 packit_facilities.add_facility('auto-tests', auto_tests_config, default=True)
+packit_facilities.add_facility('auto-extra-meta', extra_meta_config, default=True)
