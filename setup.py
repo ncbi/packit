@@ -24,4 +24,4 @@ class PacKitDist(Distribution):
                 self._packit_inited = True
 
 
-setup(distclass=PacKitDist, setup_requires=['pbr'], pbr=True)
+setup(distclass=PacKitDist, setup_requires=['pbr>=0.10.8,<0.11', 'wheel>=0.24'], pbr=True)
