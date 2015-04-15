@@ -150,13 +150,13 @@ commit hash will be also added.
 Example:
 1. <git tag 1.2.3.dev> -> version is *1.2.3.dev*
 
-2. <git commit> -> version is *1.2.3.dev1*
+2. <git commit> -> version is *1.2.3.dev.post1*
 
-3. <git commit> -> version is *1.2.3.dev2*
+3. <git commit> -> version is *1.2.3.dev.post2*
 
 4. <git tag 1.2.3.a> -> version is *1.2.3.a*
 
-5. <git commit> -> version is *1.2.3.a1*
+5. <git commit> -> version is *1.2.3.a.post1*
 
 6. <git tag 1.2.3> -> version is *1.2.3*
 
