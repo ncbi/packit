@@ -4,7 +4,7 @@ from pbr.core import pbr
 from .hooks import setup_hook
 
 
-def patch_pbr():
+def patch_pbr(config=None):
     hooks.setup_hook = setup_hook
     # Disabling annoying pbr.json
     pbr_json.write_pbr_json = lambda *a, **k: None
