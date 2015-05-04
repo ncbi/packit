@@ -19,7 +19,7 @@ import pbr.packaging
 __all__ = "git_pep440_version_generator",
 
 
-DEFAULT_TEMPLATE = "{tag}-{distance}+{hash}"
+DEFAULT_TEMPLATE = "{tag}.post{distance}+{hash}"
 
 
 def git_pep440_version_generator(template):
