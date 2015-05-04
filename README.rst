@@ -52,6 +52,20 @@ list will be extended as new ones will be added.
 - **auto-tests** - make ``python setup.py test`` run tests with *tox*
   or *pytest* (depending on *tox.ini* presence).
 
+On top of that PacKit forces easy_install to honor `PIP's fetch directives set through environment variables`_:
+
+- find_links
+
+- site_dirs
+
+- index_url
+
+- optimize
+
+- site_dirs
+
+- allow_hosts
+
 
 Planned facilities
 ^^^^^^^^^^^^^^^^^^
@@ -397,6 +411,7 @@ Further Development
 
 .. _pbr: http://docs.openstack.org/developer/pbr/
 .. _distutils2 setup.cfg syntax: http://alexis.notmyidea.org/distutils2/setupcfg.html
+.. _PIP's fetch directives set through environment variables: https://pip.pypa.io/en/latest/user_guide.html#environment-variables
 .. _platter: http://platter.pocoo.org/
 .. _setuptools-git: https://pypi.python.org/pypi/setuptools-git
 .. _pytest-gitignore: https://pypi.python.org/pypi/pytest-gitignore/

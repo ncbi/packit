@@ -5,6 +5,7 @@ import warnings
 from distutils import errors
 
 from setuptools import dist
+from setuptools.command.easy_install import easy_install
 
 from pbr import util
 from pbr import hooks, pbr_json
@@ -98,8 +99,27 @@ def patch_pbr():
     pbr_json.write_pbr_json = lambda *a, **k: None
 
 
+def patch_setuptools(prefix='pip'):
+    fetch_directives = (
+        'find_links', 'site_dirs', 'index_url', 'optimize',
+        'site_dirs', 'allow_hosts',
+    )
+
+    orig = easy_install.finalize_options
+
+    def patched_finalize_options(self):
+        for option in fetch_directives:
+            value = os.getenv('_'.join([prefix, option]).upper())
+            if value is not None:
+                setattr(self, option, value)
+        orig(self)
+
+    easy_install.finalize_options = patched_finalize_options
+
+
 def patch(config=None):
     patch_pbr()
+    patch_setuptools()
 
 
 def packit(dist, attr, value):
