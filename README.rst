@@ -397,7 +397,15 @@ When enabled, the *python setup.py test* is equal to running:
 - **tox** if *tox.ini* is present
 
 - **pytest** with `pytest-gitignore`_ and `teamcity-messages`_ plugins
-  enabled otherwise
+  enabled by default otherwise (if you need any other plugins just add
+  them to test requirements) and activate them with additional options
+  (see below)
+
+The facility automatically downloads underlying test framework and install
+it - you don't need to worry baout it.
+
+You can pass additional parameters to the underlying test framework with
+'-a' or '--test-args='.
 
 Further Development
 -------------------

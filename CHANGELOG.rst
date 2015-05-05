@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.4 (05 May 2015)
+-----------------
+
+- Improved PacKit's test command - skip dependencies install when running tox, honor PIP's fetch directives
+
 0.3 (04 May 2015)
 -----------------
 

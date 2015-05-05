@@ -6,6 +6,16 @@ from setuptools.command.test import test as TestCommand
 class PackitTest(TestCommand):
     command_name = 'test'
 
+    requirements_tox = [
+        'tox>=1.9.2',
+    ]
+
+    requirements_pytest = [
+        'pytest>=2.7.0',
+        'teamcity-messages>=1.12',
+        'pytest-gitignore>=1.1',
+    ]
+
     def __init__(self, dist, **kw):
         self.distribution = dist
         self.initialize_options()
@@ -44,33 +54,51 @@ class PackitTest(TestCommand):
             setattr(self, k, v)
 
     user_options = [
-        ('tox-args=', 't', "Arguments to pass to tox"),
-        ('pytest-args=', 'p', "Arguments to pass to py.test")
+        ('test-args=', 'a', "Arguments to pass to underlying test framework"),
     ]
 
     def initialize_options(self):
         TestCommand.initialize_options(self)  # old-style classes
-        self.tox_args = None
-        self.pytest_args = None
+        self.test_args = []
 
     def finalize_options(self):
+        backup = self.test_args
         TestCommand.finalize_options(self)  # old-style classes
-        self.test_args = []
-        self.test_suite = True
+        self.test_args = backup
 
-    def run_tests(self):
+    def run(self):
+        if hasattr(self.distribution, '_egg_fetcher'):
+            del self.distribution._egg_fetcher
+
         if os.path.exists('tox.ini'):
+            self.announce('running tox')
             self._run_tox()
         else:
+            self.announce('running pytest')
             self._run_pytest()
 
     def _run_tox(self):
+        self.distribution.fetch_build_eggs(self.requirements_tox)
+
         import tox
 
-        errno = tox.cmdline(args=self.tox_args)
-        raise SystemExit(errno)
+        exit_code = tox.cmdline(args=self.test_args)
+        raise SystemExit(exit_code)
 
     def _run_pytest(self):
-        import pytest
-        pytest.main(self.pytest_args)
+        self.distribution.fetch_build_eggs(self.requirements_pytest)
 
+        if self.distribution.install_requires:
+            self.distribution.fetch_build_eggs(self.distribution.install_requires)
+
+        if self.distribution.tests_require:
+            self.distribution.fetch_build_eggs(self.distribution.tests_require)
+
+        self.announce('running "pytest %s"')
+        self.with_project_on_sys_path(self._execute_pytest)
+
+    def _execute_pytest(self):
+        import pytest
+
+        exit_code = pytest.main(self.test_args)
+        raise SystemExit(exit_code)
