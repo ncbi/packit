@@ -1,5 +1,6 @@
-from itertools import chain
 import os
+
+from itertools import chain
 from collections import deque
 
 from pbr import packaging

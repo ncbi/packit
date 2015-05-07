@@ -1,4 +1,5 @@
 import os
+
 from itertools import product
 
 from pbr import packaging

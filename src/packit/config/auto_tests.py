@@ -1,5 +1,3 @@
-from pbr import packaging
-
 from .base import BaseConfig
 
 
