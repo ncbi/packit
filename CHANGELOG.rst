@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+0.5 (07 May 2015)
+-----------------
+
+- Better error handling for git-pep440 versioning strategy
+
+- Now PacKit honors only 'index_url' and 'find_links' PIP fetch directives but looks for them not only in
+  env vars but also in PIP configuration files as per PIP docs (requires PIP at least 1.5.0)
+
 0.4 (05 May 2015)
 -----------------
 
