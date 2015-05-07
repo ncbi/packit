@@ -46,7 +46,7 @@ def call_git(*params):
         log.fatal("[git-pep440] Cannot call git... Are you sure git is on sys path?")
         raise SystemExit(ex.errno)
 
-    result = '\n'.join(p.stdout.readlines())
+    result = b'\n'.join(p.stdout.readlines())
     p.wait()
 
     return result.strip().decode('utf-8')

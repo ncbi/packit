@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.5.1 (07 May 2015)
+-------------------
+
+- Fixed TypeError in git-pep440 versioning strategy
+
 0.5 (07 May 2015)
 -----------------
 
