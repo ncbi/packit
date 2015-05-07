@@ -11,9 +11,8 @@
 # respectively.
 from __future__ import print_function
 
+from distutils import log
 from subprocess import Popen, PIPE
-
-import pbr.packaging
 
 
 __all__ = "git_pep440_version_generator",
@@ -41,14 +40,26 @@ def git_pep440_version_generator(template):
 
 def call_git(*params):
     # Might throw OSError if git isn't on the path.
-    p = Popen(('git', ) + params, stdout=PIPE)
-    line = p.stdout.readlines()[0]
+    try:
+        p = Popen(('git', ) + params, stdout=PIPE)
+    except OSError as ex:
+        log.fatal("[git-pep440] Cannot call git... Are you sure git is on sys path?")
+        raise SystemExit(ex.errno)
+
+    result = '\n'.join(p.stdout.readlines())
     p.wait()
-    return line.strip().decode('utf-8')
+
+    return result.strip().decode('utf-8')
 
 
 def call_git_describe():
-    return call_git('describe')
+    result = call_git('describe')
+
+    if not result:
+        log.fatal("[git-pep440] The 'git describe' output is empty. Are you sure you have tags?")
+        raise SystemExit(1)
+
+    return result
 
 
 def parse_git_describe(description):
