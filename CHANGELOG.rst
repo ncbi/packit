@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.6 (14 May 2015)
+-----------------
+
+- Fixed bug: unspecified packages_root makes nested packages top-level
+- Proper handling of 'packages_root = .'
+- Updated tox version to ~=2.0, pytest~=2.7, teamcity-messages~=1.12 and pytest-gitignore~=1.1
+
 0.5.1 (07 May 2015)
 -------------------
 
