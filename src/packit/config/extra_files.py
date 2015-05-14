@@ -1,4 +1,5 @@
 import os
+from distutils import log
 
 from pbr.git import _find_git_files
 
@@ -9,7 +10,6 @@ from .base import BaseConfig
 
 
 class ExtraFilesConfig(BaseConfig):
-
     FIELD_EVERYTHING = 'everything'
 
     def __init__(self, file_set, finder):
@@ -44,7 +44,16 @@ class ExtraFilesConfig(BaseConfig):
         package_list = packages.split('\n')
 
         root = files_config.get('packages_root', '')
-        extra_files_in_root = [f for f in extra_files_in_git if f.startswith(root) and not f.endswith('.py')]
+
+        if root == '.':
+            root = ''
+
+        if root and not os.path.isdir(root):
+            log.fatal("[%s] The 'packages_root' value should be a dir name" % facility_section_name)
+            raise SystemExit(1)
+
+        extra_files_in_root = [f for f in extra_files_in_git
+                               if os.path.commonprefix([root, f]) == root and not f.endswith('.py')]
 
         package_paths = [os.path.join(root, *p.split('.')) for p in package_list]
 
@@ -54,5 +63,6 @@ class ExtraFilesConfig(BaseConfig):
 
     def _add_file(self, filename):
         self._file_set.add(filename.strip())
+
 
 extra_files_config = ExtraFilesConfig(additional_files, _find_git_files)
