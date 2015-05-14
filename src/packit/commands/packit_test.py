@@ -7,13 +7,13 @@ class PackitTest(TestCommand):
     command_name = 'test'
 
     requirements_tox = [
-        'tox>=1.9.2',
+        'tox~=2.0',
     ]
 
     requirements_pytest = [
-        'pytest>=2.7.0',
-        'teamcity-messages>=1.12',
-        'pytest-gitignore>=1.1',
+        'pytest~=2.7',
+        'teamcity-messages~=1.12',
+        'pytest-gitignore~=1.1',
     ]
 
     def __init__(self, dist, **kw):
