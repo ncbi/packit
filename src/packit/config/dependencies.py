@@ -81,7 +81,7 @@ class DependenciesConfig(BaseConfig):
         if requirements:
             return [requirements]
 
-        return filter(self._is_file_exists, self._combine(lookup_files, self.requirements_extensions))
+        return list(filter(self._is_file_exists, self._combine(lookup_files, self.requirements_extensions)))
 
     def _find_linked_requirements_files(self, entry_files):
         result = set(entry_files)
