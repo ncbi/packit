@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+0.7 (21 May 2015)
+-----------------
+
+- Bugfix: missing extra files when installing from sdist made with PacKit
+
+- Bugfix: requirements not installed when installing from sdist made with PacKit
+
+- Improvement: added contact information to PacKit metadata
+
 0.6 (14 May 2015)
 -----------------
 
