@@ -1,12 +1,20 @@
 CHANGELOG
 =========
 
+0.8 (02 Jun 2015)
+-----------------
+
+- Improvement: added 'composite' version strategy
+
+- Improvement: added 'output' option into auto-version configuration
+
 0.7 (21 May 2015)
 -----------------
 
 - Bugfix: missing extra files when installing from sdist made with PacKit
 
-- Bugfix: requirements not installed when installing from sdist made with PacKit
+- Bugfix: requirements not installed when installing from sdist made with
+  PacKit
 
 - Improvement: added contact information to PacKit metadata
 
@@ -17,7 +25,8 @@ CHANGELOG
 
 - Proper handling of 'packages_root = .'
 
-- Updated tox version to ~=2.0, pytest~=2.7, teamcity-messages~=1.12 and pytest-gitignore~=1.1
+- Updated tox version to ~=2.0, pytest~=2.7, teamcity-messages~=1.12 and
+  pytest-gitignore~=1.1
 
 0.5.1 (07 May 2015)
 -------------------
@@ -29,28 +38,34 @@ CHANGELOG
 
 - Better error handling for git-pep440 versioning strategy
 
-- Now PacKit honors only 'index_url' and 'find_links' PIP fetch directives but looks for them not only in
-  env vars but also in PIP configuration files as per PIP docs (requires PIP at least 1.5.0)
+- Now PacKit honors only 'index_url' and 'find_links' PIP fetch directives but
+  looks for them not only in env vars but also in PIP configuration files as
+  per PIP docs (requires PIP at least 1.5.0)
 
 0.4 (05 May 2015)
 -----------------
 
-- Improved PacKit's test command - skip dependencies install when running tox, honor PIP's fetch directives
+- Improved PacKit's test command - skip dependencies install when running tox,
+  honor PIP's fetch directives
 
 0.3 (04 May 2015)
 -----------------
 
-- Fixed TypeError on Python 2 due to several instances of setuptools being loaded at the same time
+- Fixed TypeError on Python 2 due to several instances of setuptools being
+  loaded at the same time
 
-- PacKit forces easy_install to honor PIP's fetch directives set through environment variables
+- PacKit forces easy_install to honor PIP's fetch directives set through
+  environment variables
 
-- Normalized post-version formatting from '-{num}' to '.post{num}' for Git-PEP440 versioning strategy
+- Normalized post-version formatting from '-{num}' to '.post{num}' for
+  Git-PEP440 versioning strategy
 
 
 0.2 (28 Apr 2015)
 -----------------
 
-- Workaround for "dist must be a Distribution instance" bug (https://bugs.launchpad.net/pbr/+bug/1412875)
+- Workaround for "dist must be a Distribution instance" bug
+  (https://bugs.launchpad.net/pbr/+bug/1412875)
 
 
 0.1 (15 Apr 2015)
