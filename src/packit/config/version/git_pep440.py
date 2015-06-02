@@ -21,7 +21,7 @@ __all__ = "git_pep440_version_generator",
 DEFAULT_TEMPLATE = "{tag}.post{distance}+{hash}"
 
 
-def git_pep440_version_generator(template):
+def git_pep440_version_generator(template, **kwargs):
     if not template:
         template = DEFAULT_TEMPLATE
 

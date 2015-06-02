@@ -12,7 +12,7 @@ upon you.  PacKit tries to solve this by providing a simple,
 convenient, and flexible way to create and build packages while aiming
 for following goals:
 
-- simple declarative way to configure your package through *setup.cfg*  following  `distutils2 setup.cfg syntax`_
+- simple declarative way to configure your package through ``setup.cfg`` following  `distutils2 setup.cfg syntax`_
 
 - reasonable defaults
 
@@ -39,18 +39,18 @@ list will be extended as new ones will be added.
 
 - **auto-license** - include license file into distribution
 
-- **auto-dependencies** - populate *install_requires* and
+- **auto-dependencies** - populate ``install_requires`` and
   *test_requires* from requirement files
 
 - **auto-packages** - discover packages to include in distribution.
 
 - **auto-extra-meta** - add useful options to the metadata config section
 
-- **auto-package-data** - include all files tracked by *git* from
+- **auto-package-data** - include all files tracked by ``git`` from
   package dirs only.
 
-- **auto-tests** - make ``python setup.py test`` run tests with *tox*
-  or *pytest* (depending on *tox.ini* presence).
+- **auto-tests** - make ``python setup.py test`` run tests with ``tox``
+  or ``pytest`` (depending on ``tox.ini`` presence).
 
 On top of that PacKit forces easy_install to honor following `PIP's fetch directives`_:
 
@@ -70,6 +70,8 @@ Planned facilities
 
 - **auto-docs** - API docs generation
 
+- **auto-clean** - configurable clean jobs
+
 - **auto-coverage** (?) - produce coverage reports while running tests
 
 If you don't see desired facilities or have cool features in mind feel
@@ -79,7 +81,7 @@ free to contact us and tell about your ideas.
 Usage
 -----
 
-Create a *setup.py* in your project dir:
+Create a ``setup.py`` in your project dir:
 ::
 
     from setuptools import setup
@@ -89,7 +91,7 @@ Create a *setup.py* in your project dir:
 
 That was the first and the last time you touched that file for your project.
 
-Now let's create a *setup.cfg* that you will use in order to configure
+Now let's create a ``setup.cfg`` that you will use in order to configure
 your package:
 
 ::
@@ -106,8 +108,8 @@ Facilities
 ----------
 
 Currently all available facilities are enabled by default. Though you
-can easily turn them off by using *facilities* section in your
-*setup.cfg*:
+can easily turn them off by using ``facilities`` section in your
+``setup.cfg``:
 
 ::
 
@@ -131,50 +133,57 @@ auto-version
 When enabled, ``auto-version`` will generate and set package version
 according to selected versioning strategy.
 
-Versioning strategy can be selected using *type* field under
-*auto-version* section within *setup.cfg*.  The default is:
+Versioning strategy can be selected using ``type`` field under
+``auto-version`` section within ``setup.cfg``.  The default is:
 
 ::
 
     [auto-version]
     type = git-pep440
+    output = src/templates/version.html
+
+
+You can use ``output`` field to ask PacKit to write generated version value
+into specified filename. The specified filename do not need to exist but the
+parent directories should exist. Provided path should always use
+forward slashes.
 
 git-pep440
 """"""""""
 
-Generate `PEP440`_-compliant version from *git* tags. It's expected
+Generate `PEP440`_-compliant version from ``git`` tags. It's expected
 that you using git tags that follow `public version identifier`_
-description and *git-pep440* will just append number of commits since
-tag was applied to your tag value (the *N* in `public version
+description and ``git-pep440`` will just append number of commits since
+tag was applied to your tag value (the ``N`` in `public version
 identifier`_ description).
 
 If number of commits since tag equal to 0 (your building the tagged
-version) the *N* value won't be appended. Otherwise, it will be
+version) the ``N`` value won't be appended. Otherwise, it will be
 appended and `local version identifier`_ equal to first 7 chars of
 commit hash will be also added.
 
 Example:
-1. <git tag 1.2.3.dev> -> version is *1.2.3.dev*
+1. <git tag 1.2.3.dev> -> version is ``1.2.3.dev``
 
-2. <git commit> -> version is *1.2.3.dev.post1*
+2. <git commit> -> version is ``1.2.3.dev.post1``
 
-3. <git commit> -> version is *1.2.3.dev.post2*
+3. <git commit> -> version is ``1.2.3.dev.post2``
 
-4. <git tag 1.2.3.a> -> version is *1.2.3.a*
+4. <git tag 1.2.3.a> -> version is ``1.2.3.a``
 
-5. <git commit> -> version is *1.2.3.a.post1*
+5. <git commit> -> version is ``1.2.3.a.post1``
 
-6. <git tag 1.2.3> -> version is *1.2.3*
+6. <git tag 1.2.3> -> version is ``1.2.3``
 
-7. <git commit> -> version is *1.2.3.post1*
+7. <git commit> -> version is ``1.2.3.post1``
 
-8. <git commit> -> version is *1.2.3.post2*
+8. <git commit> -> version is ``1.2.3.post2``
 
 fixed
 """""
 
-Use value specified in *value* (it's required when this strategy is
-used) under *auto-version* section in *setup.cfg*:
+Use value specified in ``value`` (it's required when this strategy is
+used) under ``auto-version`` section in ``setup.cfg``:
 
 ::
 
@@ -185,9 +194,9 @@ used) under *auto-version* section in *setup.cfg*:
 file
 """"
 
-Read a line using UTF-8 encoding from the file specified in *value*
-(it's required when this strategy is used) under *auto-version*
-section in *setup.cfg*, strip it and use as a version.
+Read a line using UTF-8 encoding from the file specified in ``value``
+(it's required when this strategy is used) under ``auto-version``
+section in ``setup.cfg``, strip it and use as a version.
 
 ::
 
@@ -198,17 +207,53 @@ section in *setup.cfg*, strip it and use as a version.
 shell
 """""
 
-Execute command specified in *value* (it's required when this strategy
-is used) under *auto-version* section in *setup.cfg*, read a line from
-*stdout*, strip it and use as a version
+Execute command specified in ``value`` (it's required when this strategy
+is used) under ``auto-version`` section in ``setup.cfg``, read a line from
+``stdout``, strip it and use as a version
+
+composite
+"""""""""
+
+The most advanced version strategy designed for special cases. It allows you
+to generate complex version values based on other version strategies. The
+usage is pretty simple though:
+
+::
+
+    [auto-version]
+    type = composite
+    value = {foo}.{bar}+{git}
+    output = main.version
+
+    [auto-version:foo]
+    type = fixed
+    value = 42
+    output = 1st.version
+
+    [auto-version:bar]
+    type = shell
+    value = echo $RANDOM
+
+    [auto-version:git]
+    type = git-pep440
+    output = 3rd.version
+
+The ``value`` field in composite version strategy should be a valid
+`string format expression`_.
+
+Please note that ``output`` directives used here only for reference (to show
+that they can be used anywhere) and are not required.
+
+It's OK to define 'extra' version components and not use them but it's an
+error to not define any of components mentioned in composite version template.
 
 auto-description
 ^^^^^^^^^^^^^^^^
 
-When enabled will fill out *long_description* for package from a readme.
+When enabled will fill out ``long_description`` for package from a readme.
 
-The *readme* file name could be specified with *file* field under
-*auto-description* section.
+The ``readme`` file name could be specified with ``file`` field under
+``auto-description`` section.
 
 If no file name provided, it will be discovered automatically by
 trying following list of files:
@@ -244,7 +289,7 @@ auto-license
 
 When enabled will include the license file into the distribution.
 
-The license file name could be specified by the *file* field within *auto-license* section.
+The license file name could be specified by the ``file`` field within ``auto-license`` section.
 
 If license file name is not provided the facility will try to discover it in the current dir
 trying following file names:
@@ -272,11 +317,11 @@ Each of these files will be tried with following extensions:
 auto-dependencies
 ^^^^^^^^^^^^^^^^^
 
-When enabled will fill *install_requires* and *test_requires* from requirement
+When enabled will fill ``install_requires`` and ``test_requires`` from requirement
 files.
 
-Requirement files could be specified by *install* and *test* fields under the
-*auto-dependencies* section of the *setup.cfg*.
+Requirement files could be specified by ``install`` and ``test`` fields under
+the ``auto-dependencies`` section of the ``setup.cfg``.
 
 If requirements file names not provided then the facility will try to discover them automatically.
 
@@ -318,34 +363,34 @@ including a line like ``-r other-requires-file.txt``.
 auto-packages
 ^^^^^^^^^^^^^
 
-When enabled and no packages provided in *setup.cfg* through
-*packages* option under *files* section will try to automatically find
+When enabled and no packages provided in ``setup.cfg`` through
+``packages`` option under ``files`` section will try to automatically find
 out all packages in current dir recursively.
 
-It operates using *exclude* and *include* values that can be specified
-under *auto-packages* section within *setup.cfg*.
+It operates using ``exclude`` and ``include`` values that can be specified
+under ``auto-packages`` section within ``setup.cfg``.
 
-If *exclude* not provided the following defaults will be used:
-*test**, *docs*, *.tox* and *env*.
+If ``exclude`` not provided the following defaults will be used:
+``test``, ``docs``, ``.tox`` and ``env``.
 
-If *include* not provided, *auto-packages* will try the following
+If ``include`` not provided, ``auto-packages`` will try the following
 steps in order to generate it:
 
-1. If *packages_root* value provided under *files* section in
-   *setup.cfg*, it will be used.
+1. If ``packages_root`` value provided under ``files`` section in
+   ``setup.cfg``, it will be used.
 
 2. Otherwise the current working dir will be scanned for any python
    packages (dirs with __init__.py) while honoring exclude
-   *value*. *This packages also will be included into the resulting
+   ``value``. *This packages also will be included into the resulting
    list of packages.*
 
-Once *include* value is determined, the resulting packages list will
+Once ``include`` value is determined, the resulting packages list will
 be generated using following algorithm:
 
 ::
 
   for path in include:
-      found_packages = set(find_packages(path, exclude))
+      found_packages |= set(find_packages(path, exclude))
 
 
 auto-extra-meta
@@ -364,12 +409,12 @@ auto-package-data
 
 When enabled:
 
-1. If the *everything* option under the *auto-package-data* section is
+1. If the ``everything`` option under the ``auto-package-data`` section is
     set to true, behaves like `setuptools-git`_. Otherwise, includes all
     files only from packages' dirs tracked by git to distribution.
 
 2. Allows you to specify extra files to be included in distribution in
-   *setup.cfg* using *extra_files* under *files* section like:
+   ``setup.cfg`` using ``extra_files`` under ``files`` section like:
 
 ::
 
@@ -384,9 +429,9 @@ auto-tests
 
 Has no additional configuration options [yet].
 
-When enabled, the *python setup.py test* is equal to running:
+When enabled, the ``python setup.py test`` is equal to running:
 
-- **tox** if *tox.ini* is present
+- **tox** if ``tox.ini`` is present
 
 - **pytest** with `pytest-gitignore`_ and `teamcity-messages`_ plugins
   enabled by default otherwise (if you need any other plugins just add
@@ -420,3 +465,4 @@ Further Development
 .. _PEP440: https://www.python.org/dev/peps/pep-0440/
 .. _public version identifier: https://www.python.org/dev/peps/pep-0440/#public-version-identifiers
 .. _local version identifier: https://www.python.org/dev/peps/pep-0440/#local-version-identifiers
+.. _string format expression: https://docs.python.org/2/library/string.html#string-formatting
