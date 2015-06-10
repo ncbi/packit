@@ -424,6 +424,8 @@ When enabled:
     hints.txt
     some/stuff/lib.so
 
+3. Allwos you to use glob syntax (including globstar) in [files]/data-files
+
 auto-tests
 ^^^^^^^^^^
 
@@ -439,7 +441,7 @@ When enabled, the ``python setup.py test`` is equal to running:
   (see below)
 
 The facility automatically downloads underlying test framework and install
-it - you don't need to worry baout it.
+it - you don't need to worry about it.
 
 You can pass additional parameters to the underlying test framework with
 '-a' or '--test-args='.
