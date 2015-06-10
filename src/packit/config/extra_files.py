@@ -1,7 +1,9 @@
 import os
 from distutils import log
-
+from collections import OrderedDict
 from pkg_resources import to_filename
+
+import glob2 as glob2
 
 from pbr.git import _find_git_files, _get_git_directory
 
@@ -22,6 +24,7 @@ class ExtraFilesConfig(BaseConfig):
         metadata_config = config.setdefault('metadata', {})
 
         files_config = config.setdefault('files', {})
+        self._expand_data_files_globs(files_config)
         self._add_extra_files_from_cfg(files_config)
 
         root = self._get_packages_root(files_config)
@@ -95,6 +98,61 @@ class ExtraFilesConfig(BaseConfig):
             egg_info = os.path.join(egg_base, egg_info)
 
         return egg_info
+
+    def _expand_data_files_globs(self, files_config):
+        data_files_str = files_config.get('data_files', '')
+
+        if not data_files_str:
+            return data_files_str
+
+        data_files_lines = data_files_str.strip().split('\n')
+        expanded_data_files = OrderedDict()  # expanded
+
+        for line in data_files_lines:
+            destination, sep, source = [x.strip() for x in line.partition('=')]
+
+            real_source = source
+            real_destination = destination
+
+            expanded = []
+            if source:
+                # single line expression
+                expanded = self._expand_glob(real_source)
+            else:
+                if sep:
+                    # 1st line of multi-lin expression
+                    real_destination = destination
+                else:
+                    real_source = destination
+                    expanded = self._expand_glob(real_source)  # destination is actually source here
+
+            for path in expanded:
+                prefix = os.path.commonprefix([real_source, path])
+                sub_path = path[len(prefix):]
+
+                dirs, filename = os.path.split(sub_path)
+
+                computed_destination = '/'.join(filter(None, [real_destination, dirs]))
+                expanded_data_files.setdefault(computed_destination, []).append(path)
+
+        new_data_files_lines = []
+        for destination, source in expanded_data_files.items():
+            if not source:
+                continue  # expanded to none
+
+            if len(source) == 1:
+                source_str = source[0]
+            else:
+                source_str = '\n{}'.format('\n'.join(source))
+
+            new_data_files_lines.append('{} = {}'.format(destination, source_str))
+
+        new_data_files_str = '\n'.join(new_data_files_lines)
+        files_config['data_files'] = new_data_files_str
+
+    def _expand_glob(self, pattern):
+        expanded = glob2.iglob(pattern)
+        return filter(os.path.isfile, expanded)
 
 
 def git_files_finder():
