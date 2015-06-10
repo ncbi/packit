@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.9 (10 Jun 2015)
+-----------------
+
+- Bugfix/Improvement: glob (and globstar) support in [files]/data-files
+
+- Bugfix: proper parameters passing to tox with -a/--test-args=
+
 0.8 (02 Jun 2015)
 -----------------
 
