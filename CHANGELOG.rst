@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.9.1 (10 Jun 2015)
+------------------
+
+- Bugfix: crash on 'python setup.py test' (without additional parameters) 
+  due to wrong shlex usage
+
+
 0.9 (10 Jun 2015)
 -----------------
 

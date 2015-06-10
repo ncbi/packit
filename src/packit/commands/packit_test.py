@@ -65,7 +65,7 @@ class PackitTest(TestCommand):
     def finalize_options(self):
         backup = self.test_args
         TestCommand.finalize_options(self)  # old-style classes
-        self.test_args = shlex.split(backup)
+        self.test_args = shlex.split(backup or '')
 
     def run(self):
         if hasattr(self.distribution, '_egg_fetcher'):
