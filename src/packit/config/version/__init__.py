@@ -2,9 +2,8 @@ import os
 import codecs
 from distutils import log
 
-from ..base import BaseConfig
-
-import pbr.packaging
+from packit.utils import get_version_from_meta
+from packit.config.base import BaseConfig
 
 from .file import file_version_generator
 from .fixed import fixed_version_generator
@@ -27,8 +26,7 @@ class VersionConfig(BaseConfig):
         :param dict config:
         """
 
-        version = pbr.packaging._get_version_from_pkg_info(
-            config['metadata']['name'])
+        version = get_version_from_meta(config['metadata']['name'])
 
         if not version:
             version = self._resovle_package_version(config, facility_section_name)
