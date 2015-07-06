@@ -1,6 +1,3 @@
-import os
-from fnmatch import fnmatch
-
 from setuptools import find_packages
 
 from .base import BaseConfig
