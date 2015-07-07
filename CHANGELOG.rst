@@ -1,17 +1,23 @@
 CHANGELOG
 =========
 
+0.10 (7 July 2015)
+------------------
+
+- Improvement: Improved PBR compatibility - PacKit works with PBR versions
+  greater than 0.10 and lower than 2.0 (presumably)
+
 0.9.2 (15 Jun 2015)
 -------------------
 
-- Improvement: updated licensing information in package meta-data. License set 
-  to 'Public Domain', added 'License :: Public Domain' classifier and 
+- Improvement: updated licensing information in package meta-data. License set
+  to 'Public Domain', added 'License :: Public Domain' classifier and
   'LICENSE.txt' included into MANIFEST.in
 
 0.9.1 (10 Jun 2015)
 -------------------
 
-- Bugfix: crash on 'python setup.py test' (without additional parameters) 
+- Bugfix: crash on 'python setup.py test' (without additional parameters)
   due to wrong shlex usage
 
 
