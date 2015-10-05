@@ -1,11 +1,14 @@
 import os
-
 from itertools import chain
-from collections import deque
+from contextlib import contextmanager
+from collections import deque, namedtuple
 
 from pbr import packaging
 
 from .base import BaseConfig
+
+
+Requirements = namedtuple('Requirements', 'packages files links')
 
 
 class DependenciesConfig(BaseConfig):
@@ -45,29 +48,63 @@ class DependenciesConfig(BaseConfig):
 
         dependencies_facility_config = config.setdefault(facility_section_name, {})
 
-        install_requirements = self._get_requirements(dependencies_facility_config, self.FIELD_INSTALL_REQUIRES,
-                                                      self.requirements_base)
+        ###
+        install = self._process_requirements(
+            dependencies_facility_config, self.FIELD_INSTALL_REQUIRES, self.requirements_base
+        )
+        packaging.append_text_list(metadata, 'requires_dist', install.packages)
 
-        test_requirements = self._get_requirements(dependencies_facility_config, self.FIELD_TEST_REQUIRES,
-                                                   self.requirements_test)
+        test = self._process_requirements(
+            dependencies_facility_config, self.FIELD_TEST_REQUIRES, self.requirements_test
+        )
+        packaging.append_text_list(backwards_compat, 'tests_require', test.packages)
 
-        packaging.append_text_list(metadata, 'requires_dist', packaging.parse_requirements(install_requirements))
-        packaging.append_text_list(backwards_compat, 'tests_require', packaging.parse_requirements(test_requirements))
+        ###
 
-        base_links = packaging.parse_dependency_links(install_requirements)
-        test_links = packaging.parse_dependency_links(test_requirements)
-
-        links = list(set(base_links + test_links))
+        links = self._union(install.links, test.links)
         packaging.append_text_list(backwards_compat, 'dependency_links', links)
 
-        referenced_files = self._find_linked_requirements_files(chain(install_requirements, test_requirements))
+        referenced_files = self._union(install.files, test.files)
         files_config = config.setdefault('files', {})
         packaging.append_text_list(files_config, 'extra_files', referenced_files)
 
     @staticmethod
+    def _union(*iterables):
+        return sorted(set(chain.from_iterable(iterables)))
+
+    @classmethod
+    def _process_requirements(cls, config, field, defaults):
+        existing_requirements_files = cls._get_requirements(config, field, defaults)
+        top_one = existing_requirements_files[0] if existing_requirements_files else None
+
+        if not top_one:
+            return Requirements([], [], [])
+
+        with cls._cd_to_file(top_one) as (dirname, filename):  # # pbr doesn't guess cwd from file path
+            requirements = packaging.parse_requirements([filename])
+
+        referenced_files = cls._find_linked_requirements_files(top_one)
+        currdir = os.getcwd()
+        normalized_referenced_files = [x[len(currdir) + 1:] for x in referenced_files]
+        dependency_links = packaging.parse_dependency_links(referenced_files)
+
+        return Requirements(requirements, normalized_referenced_files, dependency_links)
+
+    @classmethod
+    def _get_requirements(cls, config, field, lookup_files):
+        requirements_file = config.get(field)
+
+        if requirements_file:
+            return [requirements_file]
+
+        all_possible_options = cls._combine(lookup_files, cls.requirements_extensions)
+        existing_files = filter(cls._is_file_exists, all_possible_options)
+        return list(existing_files)
+
+    @staticmethod
     def _combine(files, extensions):
         for filename in files:
-            normalized_path = os.path.join(*filename.split('/'))
+            normalized_path = os.path.join(*filename.split('/'))  # in setup.cfg we expect / on any platform
             for ext in extensions:
                 yield normalized_path + ext
 
@@ -75,20 +112,13 @@ class DependenciesConfig(BaseConfig):
     def _is_file_exists(path):
         return os.path.exists(path) and os.path.isfile(path)
 
-    def _get_requirements(self, config, field, lookup_files):
-        requirements = config.get(field)
+    @classmethod
+    def _find_linked_requirements_files(cls, *entry_files):
+        result = set(map(os.path.abspath, entry_files))
 
-        if requirements:
-            return [requirements]
-
-        return list(filter(self._is_file_exists, self._combine(lookup_files, self.requirements_extensions)))
-
-    def _find_linked_requirements_files(self, entry_files):
-        result = set(entry_files)
-
-        queue = deque(entry_files)
+        queue = deque(result)
         while queue:
-            linked_files = self._get_linked_files(queue.popleft())
+            linked_files = cls._get_linked_files(queue.popleft())
             for filename in linked_files:
                 if filename not in result:
                     result.add(filename)
@@ -96,11 +126,28 @@ class DependenciesConfig(BaseConfig):
 
         return result
 
-    def _get_linked_files(self, filename):
-        with open(filename) as f:
-            lines = f.readlines()
+    @classmethod
+    def _get_linked_files(cls, path):
+        with cls._cd_to_file(path) as (dirname, filename):
+            with open(filename) as f:
+                lines = [l.strip() for l in f.readlines()]
 
-        return set(l.partition(' ')[2] for l in lines if l.startswith('-r'))
+            referenced_files = [l.partition(' ')[2] for l in lines if l.lower().startswith('-r')]
+            return set(os.path.abspath(os.path.join(dirname, rfname)) for rfname in referenced_files)
+
+    @staticmethod
+    @contextmanager
+    def _cd_to_file(filepath):
+        currdir = os.getcwd()
+
+        base, filename = os.path.split(filepath)
+        dirname = base or currdir
+
+        os.chdir(dirname)
+        try:
+            yield (dirname, filename)
+        finally:
+            os.chdir(currdir)
 
 
 dependencies_config = DependenciesConfig()
