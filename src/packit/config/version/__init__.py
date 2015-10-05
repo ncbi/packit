@@ -29,14 +29,14 @@ class VersionConfig(BaseConfig):
         version = get_version_from_meta(config['metadata']['name'])
 
         if not version:
-            version = self._resovle_package_version(config, facility_section_name)
+            version = self._resolve_package_version(config, facility_section_name)
 
         if not version:
             raise ValueError('Cannot find any version number!')
 
         config['metadata']['version'] = version
 
-    def _resovle_package_version(self, config, facility_section_name):
+    def _resolve_package_version(self, config, facility_section_name):
         base_version_config, extra_version_config = self._get_facility_config(config, facility_section_name)
 
         sub_versions = {}
