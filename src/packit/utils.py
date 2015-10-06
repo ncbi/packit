@@ -20,5 +20,6 @@ try:
 except ImportError:
     get_version_from_meta = _get_version_from_meta
 
+
 def parse_boolean(val, true_values=('1', 'yes', 'y', 'true', 't')):
     return val.lower() in true_values
