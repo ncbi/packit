@@ -65,8 +65,13 @@ class ExtraFilesConfig(BaseConfig):
     def _add_extra_files_from_cfg(self, files_config):
         extra_files = files_config.get('extra_files', '').strip().split('\n')
 
-        for filename in filter(None, extra_files):
-            self._add_file(filename)
+        resolved_files = []
+        for pattern in filter(None, extra_files):
+            for filename in self._expand_glob(pattern):
+                self._add_file(filename)
+                resolved_files.append(filename)
+
+        files_config['extra_files'] = '\n'.join(resolved_files)
 
     @staticmethod
     def _get_packages_root(files_config):
