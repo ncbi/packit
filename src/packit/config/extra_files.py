@@ -25,6 +25,7 @@ class ExtraFilesConfig(BaseConfig):
 
         files_config = config.setdefault('files', {})
         self._expand_data_files_globs(files_config)
+        self._expand_scripts_globs(files_config)
         self._add_extra_files_from_cfg(files_config)
 
         root = self._get_packages_root(files_config)
@@ -167,6 +168,18 @@ class ExtraFilesConfig(BaseConfig):
     def _expand_glob(pattern):
         expanded = glob2.iglob(pattern)
         return filter(os.path.isfile, expanded)
+
+    def _expand_scripts_globs(self, files_config):
+        scripts_str = files_config.get('scripts', '')
+        scripts = filter(None, scripts_str.split('\n'))
+
+        expanded_scripts = []
+        for pattern in scripts:
+            for filename in self._expand_glob(pattern):
+                self._add_file(filename)
+                expanded_scripts.append(filename)
+
+        files_config['scripts'] = '\n'.join(expanded_scripts)
 
 
 def git_files_finder():
