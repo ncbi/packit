@@ -48,7 +48,6 @@ class DependenciesConfig(BaseConfig):
 
         dependencies_facility_config = config.setdefault(facility_section_name, {})
 
-        ###
         install = self._process_requirements(
             dependencies_facility_config, self.FIELD_INSTALL_REQUIRES, self.requirements_base
         )
@@ -58,8 +57,6 @@ class DependenciesConfig(BaseConfig):
             dependencies_facility_config, self.FIELD_TEST_REQUIRES, self.requirements_test
         )
         packaging.append_text_list(backwards_compat, 'tests_require', test.packages)
-
-        ###
 
         links = self._union(install.links, test.links)
         packaging.append_text_list(backwards_compat, 'dependency_links', links)
