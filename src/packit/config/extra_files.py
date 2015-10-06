@@ -68,7 +68,8 @@ class ExtraFilesConfig(BaseConfig):
         for filename in filter(None, extra_files):
             self._add_file(filename)
 
-    def _get_packages_root(self, files_config):
+    @staticmethod
+    def _get_packages_root(files_config):
         root = files_config.get('packages_root', '')
 
         if root == '.':
@@ -89,7 +90,8 @@ class ExtraFilesConfig(BaseConfig):
 
         return result
 
-    def _get_egg_info(self, metadata_config, packages_root):
+    @staticmethod
+    def _get_egg_info(metadata_config, packages_root):
         egg_name = metadata_config['name']
         egg_base = packages_root
 
@@ -135,6 +137,7 @@ class ExtraFilesConfig(BaseConfig):
                 computed_destination = '/'.join(filter(None, [real_destination, dirs]))
                 expanded_data_files.setdefault(computed_destination, []).append(path)
 
+        referenced_files = []
         new_data_files_lines = []
         for destination, source in expanded_data_files.items():
             if not source:
@@ -142,7 +145,9 @@ class ExtraFilesConfig(BaseConfig):
 
             if len(source) == 1:
                 source_str = source[0]
+                referenced_files.append(source_str)
             else:
+                referenced_files.extend(source)
                 source_str = '\n{}'.format('\n'.join(source))
 
             new_data_files_lines.append('{} = {}'.format(destination, source_str))
@@ -150,7 +155,11 @@ class ExtraFilesConfig(BaseConfig):
         new_data_files_str = '\n'.join(new_data_files_lines)
         files_config['data_files'] = new_data_files_str
 
-    def _expand_glob(self, pattern):
+        for fname in referenced_files:
+            self._add_file(fname)
+
+    @staticmethod
+    def _expand_glob(pattern):
         expanded = glob2.iglob(pattern)
         return filter(os.path.isfile, expanded)
 
