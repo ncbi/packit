@@ -39,15 +39,12 @@ def git_pep440_version_generator(template, **kwargs):
 
 
 def call_git(*params):
-    # Might throw OSError if git isn't on the path.
+    # Might throw EnvironmentError if git isn't on the path.
     try:
-        p = Popen(('git', ) + params, stdout=PIPE)
-    except OSError as ex:
-        log.fatal("[git-pep440] Cannot call git... Are you sure git is on sys path?")
-        raise SystemExit(ex.errno)
-
-    result = b'\n'.join(p.stdout.readlines())
-    p.wait()
+        result = Popen(('git', ) + params, stdout=PIPE, stderr=PIPE).communicate()[0]
+    except EnvironmentError as ex:
+        log.fatal("[git-pep440] Cannot call git... {}".format(ex))
+        raise SystemExit(getattr(ex, 'errno', 1))
 
     return result.strip().decode('utf-8')
 
@@ -56,8 +53,8 @@ def call_git_describe():
     result = call_git('describe')
 
     if not result:
-        log.fatal("[git-pep440] The 'git describe' output is empty. Are you sure you have tags?")
-        raise SystemExit(1)
+        log.warn("[git-pep440] The 'git describe' output is empty. Are you sure you have tags?")
+        return '0.0'
 
     return result
 
