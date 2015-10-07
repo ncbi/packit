@@ -25,6 +25,7 @@ class ExtraFilesConfig(BaseConfig):
 
         files_config = config.setdefault('files', {})
         self._expand_data_files_globs(files_config)
+        self._expand_scripts_globs(files_config)
         self._add_extra_files_from_cfg(files_config)
 
         root = self._get_packages_root(files_config)
@@ -65,10 +66,16 @@ class ExtraFilesConfig(BaseConfig):
     def _add_extra_files_from_cfg(self, files_config):
         extra_files = files_config.get('extra_files', '').strip().split('\n')
 
-        for filename in filter(None, extra_files):
-            self._add_file(filename)
+        resolved_files = []
+        for pattern in filter(None, extra_files):
+            for filename in self._expand_glob(pattern):
+                self._add_file(filename)
+                resolved_files.append(filename)
 
-    def _get_packages_root(self, files_config):
+        files_config['extra_files'] = '\n'.join(resolved_files)
+
+    @staticmethod
+    def _get_packages_root(files_config):
         root = files_config.get('packages_root', '')
 
         if root == '.':
@@ -89,7 +96,8 @@ class ExtraFilesConfig(BaseConfig):
 
         return result
 
-    def _get_egg_info(self, metadata_config, packages_root):
+    @staticmethod
+    def _get_egg_info(metadata_config, packages_root):
         egg_name = metadata_config['name']
         egg_base = packages_root
 
@@ -135,6 +143,7 @@ class ExtraFilesConfig(BaseConfig):
                 computed_destination = '/'.join(filter(None, [real_destination, dirs]))
                 expanded_data_files.setdefault(computed_destination, []).append(path)
 
+        referenced_files = []
         new_data_files_lines = []
         for destination, source in expanded_data_files.items():
             if not source:
@@ -142,7 +151,9 @@ class ExtraFilesConfig(BaseConfig):
 
             if len(source) == 1:
                 source_str = source[0]
+                referenced_files.append(source_str)
             else:
+                referenced_files.extend(source)
                 source_str = '\n{}'.format('\n'.join(source))
 
             new_data_files_lines.append('{} = {}'.format(destination, source_str))
@@ -150,9 +161,25 @@ class ExtraFilesConfig(BaseConfig):
         new_data_files_str = '\n'.join(new_data_files_lines)
         files_config['data_files'] = new_data_files_str
 
-    def _expand_glob(self, pattern):
+        for fname in referenced_files:
+            self._add_file(fname)
+
+    @staticmethod
+    def _expand_glob(pattern):
         expanded = glob2.iglob(pattern)
         return filter(os.path.isfile, expanded)
+
+    def _expand_scripts_globs(self, files_config):
+        scripts_str = files_config.get('scripts', '')
+        scripts = filter(None, scripts_str.split('\n'))
+
+        expanded_scripts = []
+        for pattern in scripts:
+            for filename in self._expand_glob(pattern):
+                self._add_file(filename)
+                expanded_scripts.append(filename)
+
+        files_config['scripts'] = '\n'.join(expanded_scripts)
 
 
 def git_files_finder():
