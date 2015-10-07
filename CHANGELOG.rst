@@ -1,6 +1,21 @@
 CHANGELOG
 =========
 
+
+0.11 (7 Oct 2015)
+-----------------
+
+- Improvement: glob (and globstar) support in [files]/extra_files
+
+- Improvement: glob (and globstar) support in [files]/scripts
+
+- Improvement: include all files referenced in data_files into extra_files
+
+- Improvement: git-pep440 reports version 0.0 when there are no tags or git repo doesn't exist
+
+- Bugfix: '-r' syntax in requirements files - referenced files now included properly
+
+
 0.10 (7 July 2015)
 ------------------
 
