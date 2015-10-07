@@ -424,7 +424,7 @@ When enabled:
     hints.txt
     some/stuff/lib.so
 
-3. Allwos you to use glob syntax (including globstar) in [files]/data-files
+3. Allows you to use glob syntax (including globstar) in ``data-files``, ``extra_files`` and ``scripts``
 
 auto-tests
 ^^^^^^^^^^
