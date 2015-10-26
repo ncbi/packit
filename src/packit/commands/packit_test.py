@@ -55,17 +55,16 @@ class PackitTest(TestCommand):
             setattr(self, k, v)
 
     user_options = [
-        ('test-args=', 'a', "Arguments to pass to underlying test framework"),
+        ('additional-test-args=', 'a', "Arguments to pass to underlying test framework"),
     ]
 
     def initialize_options(self):
         TestCommand.initialize_options(self)  # old-style classes
-        self.test_args = []
+        self.additional_test_args = []
 
     def finalize_options(self):
-        backup = self.test_args
         TestCommand.finalize_options(self)  # old-style classes
-        self.test_args = shlex.split(backup or '')
+        self.additional_test_args = shlex.split(self.additional_test_args or '')
 
     def run(self):
         if hasattr(self.distribution, '_egg_fetcher'):
@@ -83,7 +82,7 @@ class PackitTest(TestCommand):
 
         import tox
 
-        exit_code = tox.cmdline(args=self.test_args)
+        exit_code = tox.cmdline(args=self.additional_test_args)
         raise SystemExit(exit_code)
 
     def _run_pytest(self):
@@ -101,5 +100,5 @@ class PackitTest(TestCommand):
     def _execute_pytest(self):
         import pytest
 
-        exit_code = pytest.main(self.test_args)
+        exit_code = pytest.main(self.additional_test_args)
         raise SystemExit(exit_code)
