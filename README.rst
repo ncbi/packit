@@ -444,7 +444,7 @@ The facility automatically downloads underlying test framework and install
 it - you don't need to worry about it.
 
 You can pass additional parameters to the underlying test framework with
-'-a' or '--test-args='.
+'-a' or '--additional-test-args='.
 
 Further Development
 -------------------

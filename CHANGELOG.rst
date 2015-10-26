@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+DEV
+---
+
+- API: '--additional-test-args' replaced '--test-args' in PacKit's test command
+
+- Bugfix: setuptools 18.4 compatibility
 
 0.11 (7 Oct 2015)
 -----------------
