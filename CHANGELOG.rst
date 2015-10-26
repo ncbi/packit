@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-DEV
----
+0.12 (26 Oct 2015)
+------------------
 
 - API: '--additional-test-args' replaced '--test-args' in PacKit's test command
 
