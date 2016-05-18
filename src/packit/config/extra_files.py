@@ -156,7 +156,7 @@ class ExtraFilesConfig(BaseConfig):
                 referenced_files.extend(source)
                 source_str = '\n{}'.format('\n'.join(source))
 
-            new_data_files_lines.append('{} = {}'.format(destination, source_str))
+            new_data_files_lines.append('{} = {}'.format(destination, source_str.replace(' ', '\00')))
 
         new_data_files_str = '\n'.join(new_data_files_lines)
         files_config['data_files'] = new_data_files_str
