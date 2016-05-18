@@ -61,6 +61,9 @@ def pbr(distribution, attr, value):
         # Repeat some of the Distribution initialization code with the newly
         # provided attrs
         if attrs:
+            if 'data_files' in attrs:
+                attrs['data_files'] = _fix_data_files(attrs['data_files'])
+
             # Skips 'options' and 'licence' support which are rarely used; may
             # add back in later if demanded
             for key, val in attrs.items():
@@ -130,3 +133,16 @@ def packit(dist, attr, value):
 
     patch()
     pbr(dist, attr, value)
+
+
+def _replace_null_with_space(string):
+    return string.replace('\00', ' ')
+
+
+def _fix_data_files(data_files):
+    fixed = {}
+
+    for path, files in data_files:
+        fixed[_replace_null_with_space(path)] = list(map(_replace_null_with_space, files))
+
+    return fixed.items()

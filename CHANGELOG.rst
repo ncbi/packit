@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.13 (18 may 2015)
+------------------
+
+- Bugfix: workaround for PBR bug that was braking names of data_files with whitespace in path
+
+
 0.12 (26 Oct 2015)
 ------------------
 
