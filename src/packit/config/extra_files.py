@@ -15,6 +15,7 @@ from .base import BaseConfig
 
 class ExtraFilesConfig(BaseConfig):
     FIELD_EVERYTHING = 'everything'
+    FIELD_MANUAL = 'manual'
 
     def __init__(self, file_set, finder):
         self._file_set = file_set
@@ -28,6 +29,11 @@ class ExtraFilesConfig(BaseConfig):
         self._expand_scripts_globs(files_config)
         self._add_extra_files_from_cfg(files_config)
 
+        facility_config = config.setdefault(facility_section_name, {})
+
+        if parse_boolean(facility_config.get(self.FIELD_MANUAL, '')):
+            return
+
         root = self._get_packages_root(files_config)
 
         try:
@@ -36,7 +42,6 @@ class ExtraFilesConfig(BaseConfig):
             # Looks like someone tries to install us
             external_extra_files = self._get_extra_files_from_egg_info(metadata_config, root)
 
-        facility_config = config.setdefault(facility_section_name, {})
         if parse_boolean(facility_config.get(self.FIELD_EVERYTHING, '')):
             for filename in external_extra_files:
                 self._add_file(filename)
