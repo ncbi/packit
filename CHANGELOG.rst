@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.14 (10 nov 2016)
+------------------
+
+- Added: `manual` mode for `auto-package-data` that only includes files described by patterns from `extra_files` under `[files]` section
+
 0.13 (18 may 2015)
 ------------------
 
