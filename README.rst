@@ -409,12 +409,12 @@ auto-package-data
 
 When enabled:
 
-1. If the ``everything`` option under the ``auto-package-data`` section is
-    set to true, behaves like `setuptools-git`_. Otherwise, includes all
-    files only from packages' dirs tracked by git to distribution.
+1. If the ``everything`` option under the ``auto-package-data`` section is set to true, behaves like `setuptools-git`_. Otherwise, includes all files only from packages' dirs tracked by git to distribution.
 
 2. Allows you to specify extra files to be included in distribution in
    ``setup.cfg`` using ``extra_files`` under ``files`` section like:
+
+3. If ``manual`` option under ``auto-package-data`` section is set to true - includes only files from ``extra_files`` option in ``files`` section
 
 ::
 
