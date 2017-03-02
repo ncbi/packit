@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+Unreleased
+----------
+
+- Changed: compatible with pbr up to version 3
+
+
 0.14 (10 nov 2016)
 ------------------
 

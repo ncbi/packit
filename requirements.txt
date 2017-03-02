@@ -1,5 +1,5 @@
 setuptools>=8
 wheel>=0.24
-pbr>=0.10,<2
+pbr>=0.10,<3
 pip>=1.5
 glob2==0.4.1
