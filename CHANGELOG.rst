@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.15 (02 mar 2017)
+------------------
+
+- Changed: compatible with pbr up to version 3
+
+
 0.14 (10 nov 2016)
 ------------------
 
