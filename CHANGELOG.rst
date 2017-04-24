@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+0.16 (24 apr 2017)
+
+- Changed: removed pin for pbr version
+
 0.15 (02 mar 2017)
 ------------------
 
