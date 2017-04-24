@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-Unreleased
+0.17 (24 apr 2017)
 ----------
 
 - Changed: removed other pin for pbr version
