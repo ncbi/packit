@@ -1,8 +1,13 @@
 CHANGELOG
 =========
 
+0.18 (25 apr 2017)
+------------------
+
+- Changed: remove testing of pbr versions below 2.0 for now
+
 0.17 (24 apr 2017)
-----------
+------------------
 
 - Changed: removed other pin for pbr version
 
