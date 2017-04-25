@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-Unreleased
-----------
+0.18 (25 apr 2017)
+------------------
 
 - Changed: remove testing of pbr versions below 2.0 for now
 
