@@ -152,7 +152,7 @@ git-pep440
 """"""""""
 
 Generate `PEP440`_-compliant version from ``git`` tags. It's expected
-that you using git tags that follow `public version identifier`_
+that you are using git tags that follow `public version identifier`_
 description and ``git-pep440`` will just append number of commits since
 tag was applied to your tag value (the ``N`` in `public version
 identifier`_ description).
@@ -162,18 +162,20 @@ version) the ``N`` value won't be appended. Otherwise, it will be
 appended and `local version identifier`_ equal to first 7 chars of
 commit hash will be also added.
 
+Please note: you must create an annotated tag, otherwise it will be ignored.
+
 Example:
-1. <git tag 1.2.3.dev> -> version is ``1.2.3.dev``
+1. <git tag -a 1.2.3.dev -m "dev release 1.2.3.dev"> -> version is ``1.2.3.dev``
 
 2. <git commit> -> version is ``1.2.3.dev.post1``
 
 3. <git commit> -> version is ``1.2.3.dev.post2``
 
-4. <git tag 1.2.3.a> -> version is ``1.2.3.a``
+4. <git tag -a 1.2.3.a -m "Release 1.2.3.a"> -> version is ``1.2.3.a``
 
 5. <git commit> -> version is ``1.2.3.a.post1``
 
-6. <git tag 1.2.3> -> version is ``1.2.3``
+6. <git tag -a 1.2.3 -m "Release 1.2.3"> -> version is ``1.2.3``
 
 7. <git commit> -> version is ``1.2.3.post1``
 
