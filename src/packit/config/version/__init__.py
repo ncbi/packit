@@ -4,6 +4,9 @@ from distutils import log
 
 from packit.utils import get_version_from_meta
 from packit.config.base import BaseConfig
+from packaging.version import parse, LegacyVersion
+import packaging
+
 
 from .file import file_version_generator
 from .fixed import fixed_version_generator
@@ -33,6 +36,12 @@ class VersionConfig(BaseConfig):
 
         if not version:
             raise ValueError('Cannot find any version number!')
+
+        # valid PEP440 versions will parse into a Version object instead of LegacyVersion
+        if isinstance(parse(version), LegacyVersion):
+            raise ValueError(
+                'The version "{}" is not PEP440 compliant.  '.format(version)) + \
+                'Maybe you have used a git tag which is not something like v1.2.3 or 1.2.3'
 
         config['metadata']['version'] = version
 
