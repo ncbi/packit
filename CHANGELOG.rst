@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.19 (27 mar 2018)
+------------------
+
+- Changed: pbr version pinned to less than 4.
+
 0.18 (25 apr 2017)
 ------------------
 
