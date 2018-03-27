@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+
+Unreleased
+----------
+
+- Changed: require pbr>=4
+
 0.19 (27 mar 2018)
 ------------------
 
