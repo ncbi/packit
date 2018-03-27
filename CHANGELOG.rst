@@ -2,8 +2,8 @@ CHANGELOG
 =========
 
 
-Unreleased
-----------
+0.20 (27 mar 2018)
+------------------
 
 - Changed: require pbr>=4
 
