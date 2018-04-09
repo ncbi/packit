@@ -4,7 +4,7 @@ CHANGELOG
 Unreleased
 ------------------
 
-- Changed: CI-69 enforce pep440 versions
+- Changed: enforce pep440 versions
 
 0.20 (27 mar 2018)
 ------------------
