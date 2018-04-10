@@ -1,6 +1,12 @@
 from pbr import hooks, pbr_json
 from pbr.core import pbr
-from pip.commands.install import InstallCommand as PipInstallCommand
+try:
+    from pip.commands.install import InstallCommand as PipInstallCommand  # good old times with pip<10
+except ImportError:
+    try:
+        from pip._internal.commands.install import InstallCommands as PipInstallCommand  # thanks pip>=10
+    except ImportError:
+        PipInstallCommand = None  # who knows what will happen
 from setuptools.command.easy_install import easy_install
 
 from .hooks import setup_hook
@@ -28,14 +34,20 @@ def patch_setuptools(fetch_directives=('index_url', 'find_links')):
     orig = easy_install.finalize_options
 
     def patched_finalize_options(self):
-        cmd = PipInstallCommand()
-        config = cmd.parser.parse_args([])[0]
-        for option in fetch_directives:
-            try:
-                value = getattr(config, option)
-            except AttributeError:
-                continue
-            setattr(self, option, value)
+        try:
+            cmd = PipInstallCommand()
+            # it returns a tuple like (values : Values, args : [string]) so we take 1st item
+            # Values is a scalar value despite the confusing name
+            config = cmd.parser.parse_args([])[0]
+            for option in fetch_directives:
+                try:
+                    value = getattr(config, option)
+                except AttributeError:
+                    continue
+                setattr(self, option, value)
+        except:
+            pass  # Seems that we're incompatible?..
+
         orig(self)
 
     easy_install.finalize_options = patched_finalize_options
@@ -43,7 +55,8 @@ def patch_setuptools(fetch_directives=('index_url', 'find_links')):
 
 def patch(config=None):  # used as a setup hook
     patch_pbr()
-    patch_setuptools()
+    if PipInstallCommand:
+        patch_setuptools()
 
 
 def packit(dist, attr, value):
