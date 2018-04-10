@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-Unreleased
+0.21 (09 apr 2018)
 ------------------
 
 - Changed: enforce pep440 versions
