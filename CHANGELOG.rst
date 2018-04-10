@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+Unreleased
+----------
+
+- Fixed: compatibility with pip>=10
+- Changed: don't fail if we cannot read PIP's index-url and find_links
+
 0.21 (09 apr 2018)
 ------------------
 
