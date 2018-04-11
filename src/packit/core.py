@@ -65,6 +65,9 @@ def packit(dist, attr, value):
 
     patch()
     pbr(dist, attr, value)
+    data_files = getattr(dist, 'data_files')
+    if data_files:
+        dist.data_files = _fix_data_files(data_files)
 
 
 def _replace_null_with_space(string):
