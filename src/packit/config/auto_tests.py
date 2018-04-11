@@ -8,4 +8,5 @@ class AutoTestsConfig(BaseConfig):
         current_commands = global_config.get('commands', '')
         global_config['commands'] = '\n'.join(['packit.commands.packit_test.PackitTest', current_commands])
 
+
 auto_tests_config = AutoTestsConfig()
