@@ -32,4 +32,5 @@ class PackageConfig(BaseConfig):
     def _get_list_option(cfg, key):
         return set(filter(None, cfg.get(key, '').strip().split('\n')))
 
+
 packages_config = PackageConfig()

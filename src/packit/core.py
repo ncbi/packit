@@ -45,7 +45,7 @@ def patch_setuptools(fetch_directives=('index_url', 'find_links')):
                 except AttributeError:
                     continue
                 setattr(self, option, value)
-        except:
+        except:  # noqa
             pass  # Seems that we're incompatible?..
 
         orig(self)

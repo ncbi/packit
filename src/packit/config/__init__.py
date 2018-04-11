@@ -56,8 +56,8 @@ class PackitFacilities(object):
 
         return parse_boolean(option_dict[option_name])
 
-packit_facilities = PackitFacilities('facilities')
 
+packit_facilities = PackitFacilities('facilities')
 
 packit_facilities.add_facility('auto-version', version_config, default=True)
 packit_facilities.add_facility('auto-description', auto_description_config, default=True)

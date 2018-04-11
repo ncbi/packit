@@ -15,6 +15,7 @@ def _get_version_from_meta(package_name, pkg_metadata_filenames=('PKG-INFO', 'ME
         return None
     return pkg_metadata.get('Version', None)
 
+
 try:
     from pbr.packaging import _get_version_from_pkg_metadata as get_version_from_meta
 except ImportError:

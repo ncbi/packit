@@ -5,8 +5,6 @@ from distutils import log
 from packit.utils import get_version_from_meta
 from packit.config.base import BaseConfig
 from packaging.version import parse, LegacyVersion
-import packaging
-
 
 from .file import file_version_generator
 from .fixed import fixed_version_generator
