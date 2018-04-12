@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.23 (11 apr 2018)
+------------------
+
+- Fixed: TypeError while including data_files with a space in its name
+
 0.22 (10 apr 2018)
 ------------------
 
