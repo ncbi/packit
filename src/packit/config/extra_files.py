@@ -193,4 +193,5 @@ def git_files_finder():
 
     return _find_git_files()
 
+
 extra_files_config = ExtraFilesConfig(additional_files, git_files_finder)

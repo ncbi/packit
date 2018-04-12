@@ -20,4 +20,5 @@ class ExtraMetaConfig(BaseConfig):
             is_pure = parse_boolean(is_pure_val)
             meta_config[self.FIELD_IS_PURE] = lambda: is_pure
 
+
 extra_meta_config = ExtraMetaConfig()

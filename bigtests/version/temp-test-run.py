@@ -1,4 +1,5 @@
 import packit.config.version as v
+import pprint
 
 try:
     from ConfigParser import SafeConfigParser as ConfigParser
@@ -12,5 +13,4 @@ config = dict(config._sections)
 
 v.version_config(config, 'auto-version')
 
-import pprint
 pprint.pprint(config)
