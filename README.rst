@@ -151,7 +151,7 @@ forward slashes.
 git-pep440
 """"""""""
 
-Generate `PEP440`_-compliant version from ``git`` tags. It's expected
+Generate `PEP440`_-compliant version from **annotated** ``git`` tags. It's expected
 that you are using git tags that follow `public version identifier`_
 description and ``git-pep440`` will just append number of commits since
 tag was applied to your tag value (the ``N`` in `public version
@@ -162,7 +162,7 @@ version) the ``N`` value won't be appended. Otherwise, it will be
 appended and `local version identifier`_ equal to first 7 chars of
 commit hash will be also added.
 
-Please note: you must create an annotated tag, otherwise it will be ignored.
+Please note: you must create an **annotated** tag, otherwise it will be ignored.
 
 Example:
 1. <git tag -a 1.2.3.dev -m "dev release 1.2.3.dev"> -> version is ``1.2.3.dev``
