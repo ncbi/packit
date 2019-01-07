@@ -53,7 +53,7 @@ class AutoDescriptionConfig(BaseConfig):
                 return path
 
     def _read_file(self, filename):
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             return f.read()
 
 
