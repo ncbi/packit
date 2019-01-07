@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Unreleased
+------------------
+
+- Fixed: correctly read description files with UTF-8 characters
+
 0.23 (11 apr 2018)
 ------------------
 

@@ -1,6 +1,7 @@
 import os
 
 from itertools import product
+from io import open as io_open
 
 from pbr import packaging
 
@@ -53,7 +54,7 @@ class AutoDescriptionConfig(BaseConfig):
                 return path
 
     def _read_file(self, filename):
-        with open(filename) as f:
+        with io_open(filename, encoding='utf-8') as f:
             return f.read()
 
 
