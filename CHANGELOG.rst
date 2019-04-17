@@ -5,6 +5,8 @@ Unreleased
 ------------------
 
 - Fixed: correctly read description files with UTF-8 characters
+- Added: lots more info on including files into packages. `PY-504
+  <https://jira.ncbi.nlm.nih.gov/browse/PY-504>`_
 
 0.23 (11 apr 2018)
 ------------------
