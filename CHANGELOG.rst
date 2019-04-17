@@ -7,6 +7,7 @@ Unreleased
 - Fixed: correctly read description files with UTF-8 characters
 - Added: lots more info on including files into packages. `PY-504
   <https://jira.ncbi.nlm.nih.gov/browse/PY-504>`_
+- Removed Python 3.4 support: EOL.
 
 0.23 (11 apr 2018)
 ------------------
