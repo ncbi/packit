@@ -1,0 +1,152 @@
+# CHANGELOG
+
+## Unreleased
+
+  - Fixed: correctly read description files with UTF-8 characters
+  - Added: lots more info on including files into packages.
+    [PY-504](https://jira.ncbi.nlm.nih.gov/browse/PY-504)
+  - Removed Python 3.4 support: EOL.
+  - Converted README and CHANGELOG from ReStructured Text to Markdown.
+
+## 0.23 (11 apr 2018)
+
+  - Fixed: TypeError while including data\_files with a space in its
+    name
+
+## 0.22 (10 apr 2018)
+
+  - Fixed: compatibility with pip\>=10
+  - Changed: don't fail if we cannot read PIP's index-url and
+    find\_links
+
+## 0.21 (09 apr 2018)
+
+  - Changed: enforce pep440 versions
+
+## 0.20 (27 mar 2018)
+
+  - Changed: require pbr\>=4
+
+## 0.19 (27 mar 2018)
+
+  - Changed: pbr version pinned to less than 4.
+
+## 0.18 (25 apr 2017)
+
+  - Changed: remove testing of pbr versions below 2.0 for now
+
+## 0.17 (24 apr 2017)
+
+  - Changed: removed other pin for pbr version
+
+## 0.16 (24 apr 2017)
+
+  - Changed: removed pin for pbr version
+
+## 0.15 (02 mar 2017)
+
+  - Changed: compatible with pbr up to version 3
+
+## 0.14 (10 nov 2016)
+
+  - Added: manual mode for auto-package-data that only includes files
+    described by patterns from extra\_files under \[files\] section
+
+## 0.13 (18 may 2015)
+
+  - Bugfix: workaround for PBR bug that was braking names of data\_files
+    with whitespace in path
+
+## 0.12 (26 Oct 2015)
+
+  - API: '--additional-test-args' replaced '--test-args' in PacKit's
+    test command
+  - Bugfix: setuptools 18.4 compatibility
+
+## 0.11 (7 Oct 2015)
+
+  - Improvement: glob (and globstar) support in \[files\]/extra\_files
+  - Improvement: glob (and globstar) support in \[files\]/scripts
+  - Improvement: include all files referenced in data\_files into
+    extra\_files
+  - Improvement: git-pep440 reports version 0.0 when there are no tags
+    or git repo doesn't exist
+  - Bugfix: '-r' syntax in requirements files - referenced files now
+    included properly
+
+## 0.10 (7 July 2015)
+
+  - Improvement: Improved PBR compatibility - PacKit works with PBR
+    versions greater than 0.10 and lower than 2.0 (presumably)
+
+## 0.9.2 (15 Jun 2015)
+
+  - Improvement: updated licensing information in package meta-data.
+    License set to 'Public Domain', added 'License :: Public Domain'
+    classifier and 'LICENSE.txt' included into MANIFEST.in
+
+## 0.9.1 (10 Jun 2015)
+
+  - Bugfix: crash on 'python setup.py test' (without additional
+    parameters) due to wrong shlex usage
+
+## 0.9 (10 Jun 2015)
+
+  - Bugfix/Improvement: glob (and globstar) support in
+    \[files\]/data-files
+  - Bugfix: proper parameters passing to tox with -a/--test-args=
+
+## 0.8 (02 Jun 2015)
+
+  - Improvement: added 'composite' version strategy
+  - Improvement: added 'output' option into auto-version configuration
+
+## 0.7 (21 May 2015)
+
+  - Bugfix: missing extra files when installing from sdist made with
+    PacKit
+  - Bugfix: requirements not installed when installing from sdist made
+    with PacKit
+  - Improvement: added contact information to PacKit metadata
+
+## 0.6 (14 May 2015)
+
+  - Fixed bug: unspecified packages\_root makes nested packages
+    top-level
+  - Proper handling of 'packages\_root = .'
+  - Updated tox version to ~=2.0, pytest~=2.7, teamcity-messages~=1.12
+    and pytest-gitignore~=1.1
+
+## 0.5.1 (07 May 2015)
+
+  - Fixed TypeError in git-pep440 versioning strategy
+
+## 0.5 (07 May 2015)
+
+  - Better error handling for git-pep440 versioning strategy
+  - Now PacKit honors only 'index\_url' and 'find\_links' PIP fetch
+    directives but looks for them not only in env vars but also in PIP
+    configuration files as per PIP docs (requires PIP at least 1.5.0)
+
+## 0.4 (05 May 2015)
+
+  - Improved PacKit's test command - skip dependencies install when
+    running tox, honor PIP's fetch directives
+
+## 0.3 (04 May 2015)
+
+  - Fixed TypeError on Python 2 due to several instances of setuptools
+    being loaded at the same time
+  - PacKit forces easy\_install to honor PIP's fetch directives set
+    through environment variables
+  - Normalized post-version formatting from '-{num}' to '.post{num}' for
+    Git-PEP440 versioning strategy
+
+## 0.2 (28 Apr 2015)
+
+  - Workaround for "dist must be a Distribution instance" bug
+    (<https://bugs.launchpad.net/pbr/+bug/1412875>)
+
+## 0.1 (15 Apr 2015)
+
+  - Initial release
