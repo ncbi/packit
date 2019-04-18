@@ -498,7 +498,7 @@ Scripts need to be treated specially, and not just dropped into ``bin`` using
 ``data_files``, because Python changes the shebang (``#!``) line to match the
 virtualenv's python interpreter. This means you can directly run a script
 without activating a virtualenv - e.g. ``env/bin/pip install attrs`` will work
-even if ``env`` isn't activated.
+even if ``env`` isn't activated.[#activation]_
 
 If you have some scripts already, the easiest thing is to collect them in one
 directory, then use ``scripts``::
@@ -508,14 +508,16 @@ directory, then use ``scripts``::
     bin/*
 
 Alternatively, setuptools has a special way to directly invoke a Python
-a function from the command line, called the ``console_scripts`` entry point.
+function from the command line, called the ``console_scripts`` entry point.
 ``pull-sp-sub`` is an internal package that uses this::
 
   [entry_points]
   console_scripts =
     pull-sp-sub = pull_sp_sub:main
 
-With that configuration, once the package is installed, setuptools creates
+To explain that last line, it's *name-of-the-script* ``=``
+*dotted-path-of-the-python-module*\ ``:``\ *name-of-the-python-function*. So
+with this configuration, once the package is installed, setuptools creates
 a script at ``$VIRTUAL_ENV/bin/pull-sp-sub`` which activates the virtualenv and
 then calls the ``main`` function in the ``pull_sp_sub`` module.
 
@@ -532,14 +534,24 @@ Including compiled shared libraries
 This includes things that use the C++ Toolkit (see ``python-applog`` and
 ``cpp-toolkit-validators`` for examples). These ``.so`` files should get placed
 inside the python package hierarchy. Presumably, if you're compiling them, they
-won't be tracked by git, so they won't be included automatically by
-``auto-package-data``. Instead, once they are there, use ``extra_files`` to
-have the packaging system notice them::
+are build artifacts that won't be tracked by git, so they won't be included
+automatically by ``auto-package-data``. Instead, once they are there, use
+``extra_files`` to have the packaging system notice them::
 
   [files]
   extra_files =
       ncbilog/libclog.so
       ncbilog/libclog.version
+
+If your packages live inside a ``src`` directory, you do need to include that
+in the ``extra_files`` path::
+
+  [files]
+  extra_files =
+      src/mypkg/do_something_quickly.so
+
+Notice that ``extra_files`` is different from ``data_files`` which we used
+above.
 
 Including uncompiled C extensions (including Cython)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -584,3 +596,9 @@ Further Development
 .. _public version identifier: https://www.python.org/dev/peps/pep-0440/#public-version-identifiers
 .. _local version identifier: https://www.python.org/dev/peps/pep-0440/#local-version-identifiers
 .. _string format expression: https://docs.python.org/2/library/string.html#string-formatting
+.. [#activation] Unlike ``source env/bin/activate``, this does not change the
+        ``$PATH`` or set ``$VIRTUAL_ENV``, so there are a few rare
+        circumstances where it's not good enough: if your script needs to start
+        another script using ``subprocess`` or ``popen``, or if it tries to
+        access data using a path relative to ``$VIRTUAL_ENV``. Take a look at
+        ``env/bin/activate_this.py`` if you encounter this problem.
