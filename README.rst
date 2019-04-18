@@ -406,28 +406,6 @@ Right now, only 1 extra option supported:
   you can explicitly say whether your distribution is platform-specific or no.
 
 
-auto-package-data
-^^^^^^^^^^^^^^^^^
-
-When enabled:
-
-1. If the ``everything`` option under the ``auto-package-data`` section is set to true, behaves like `setuptools-git`_. Otherwise, includes all files only from packages' dirs tracked by git to distribution.
-
-2. Allows you to specify extra files to be included in distribution in
-   ``setup.cfg`` using ``extra_files`` under ``files`` section like:
-
-3. If ``manual`` option under ``auto-package-data`` section is set to true - includes only files from ``extra_files`` option in ``files`` section
-
-::
-
-  [files]
-  extra_files =
-    LICENSE.txt
-    hints.txt
-    some/stuff/lib.so
-
-3. Allows you to use glob syntax (including globstar) in ``data-files``, ``extra_files`` and ``scripts``
-
 auto-tests
 ^^^^^^^^^^
 
@@ -447,6 +425,154 @@ it - you don't need to worry about it.
 
 You can pass additional parameters to the underlying test framework with
 '-a' or '--additional-test-args='.
+
+auto-package-data
+^^^^^^^^^^^^^^^^^
+
+See the next section.
+
+
+Including Files Other than Python Libraries
+-------------------------------------------
+
+Often, you need to include a data file, or another program, or some other kind
+of file, with your Python package.  Here are a number of common situations, and
+how to accomplish them using packit:
+
+Placing data files with the code that uses them: auto-package-data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The default is that the ``auto-package-data`` facility is enabled. In this
+configuration, you can include data files for your python library very easily
+by just:
+
+* Placing them in the same subdirectory as a Python library that's already
+  included, for example nicelib/data.csv, and
+* Adding them to git version control.
+
+This will cause the packaging system to install them in the same place - right
+next to your Python files, but inside the virtualenv where your package is
+installed. Putting data files inside a python package makes it convenient to
+access the files using some `easy functions in the pkg_resources module
+<https://setuptools.readthedocs.io/en/latest/pkg_resources.html#basic-resource-access>`_.
+
+``pkg_resources`` should always be available - it's part of setuptools, which
+is installed in every virtualenv and every modern Python installation.  Using
+``pkg_resources``, rather than messing with ``os.dirname(__file__)`` or
+``os.path.join(os.environ['VIRTUAL_ENV'], ...)``, makes your package zip-safe.
+For example, that means it can be used inside a ``pex`` or ``zipapp`` single
+file executable.
+
+You can turn off the ``auto-package-data`` facility if you don't want this file
+inclusion mechanism to happen::
+
+  [facilities]
+  auto-package-data = no
+
+Placing data files relative to the virtual environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can also place files relative to the virtualenv, rather than inside the
+package hierarchy (which would be in
+``virtualenv/lib/python*/site-packages/something``). This is often used for
+things like static files in a Django project, so that they are easy to find for
+an external web server. The syntax for this is::
+
+  [files]
+  data_files =
+      dest_dir = src_dir/**
+      dest_dir = file_to_put_there
+
+In this example, ``dest_dir`` will be created within the top level of the
+virtualenv. The contents of ``src_dir`` will be placed inside it, along with
+``file_to_put_there``.
+
+If you need to include a compiled executable file in your package, this is
+a convenient way to do it - include ``bin = bin/**`` for example. See the
+``fastatools`` package for an example of this.
+
+Including Python scripts
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Scripts need to be treated specially, and not just dropped into ``bin`` using
+``data_files``, because Python changes the shebang (``#!``) line to match the
+virtualenv's python interpreter. This means you can directly run a script
+without activating a virtualenv - e.g. ``env/bin/pip install attrs`` will work
+even if ``env`` isn't activated.[#activation]_
+
+If you have some scripts already, the easiest thing is to collect them in one
+directory, then use ``scripts``::
+
+  [files]
+  scripts =
+    bin/*
+
+Alternatively, setuptools has a special way to directly invoke a Python
+function from the command line, called the ``console_scripts`` entry point.
+``pull-sp-sub`` is an internal package that uses this::
+
+  [entry_points]
+  console_scripts =
+    pull-sp-sub = pull_sp_sub:main
+
+To explain that last line, it's *name-of-the-script* ``=``
+*dotted-path-of-the-python-module*\ ``:``\ *name-of-the-python-function*. So
+with this configuration, once the package is installed, setuptools creates
+a script at ``$VIRTUAL_ENV/bin/pull-sp-sub`` which activates the virtualenv and
+then calls the ``main`` function in the ``pull_sp_sub`` module.
+
+Scripts created this way are slightly slower to start up than scripts that
+directly run a Python file. Also, setuptools seems to do more dependency
+checking when starting a script like this, so if you regularly live with broken
+dependencies inside your virtualenv, this will be frustrating for you. On the
+other hand, scripts made this way will work better on Windows, if that's one of
+your target environments.
+
+Including compiled shared libraries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This includes things that use the C++ Toolkit (see ``python-applog`` and
+``cpp-toolkit-validators`` for examples). These ``.so`` files should get placed
+inside the python package hierarchy. Presumably, if you're compiling them, they
+are build artifacts that won't be tracked by git, so they won't be included
+automatically by ``auto-package-data``. Instead, once they are there, use
+``extra_files`` to have the packaging system notice them::
+
+  [files]
+  extra_files =
+      ncbilog/libclog.so
+      ncbilog/libclog.version
+
+If your packages live inside a ``src`` directory, you do need to include that
+in the ``extra_files`` path::
+
+  [files]
+  extra_files =
+      src/mypkg/do_something_quickly.so
+
+Notice that ``extra_files`` is different from ``data_files`` which we used
+above.
+
+Including uncompiled C extensions (including Cython)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Packit can coexist with setuptools's support for C extensions.  Here is an
+`example with a C file that will be compiled on the user's system
+<https://bitbucket.ncbi.nlm.nih.gov/projects/PY/repos/is_xml_encodable/browse/setup.py>`_.
+In that particular package, the author chose to require Cython for developers
+but not for end users, so the distribution and the git repo include both the
+``.pyx`` file and the ``.c`` file it's translated to.
+
+Known Issues
+^^^^^^^^^^^^
+
+* If your Python package is not in the root of your Git repository (so
+  ``setup.py`` is not in the same directory as ``.git``), then
+  ``auto-package-data`` will not work.
+* The ``auto-package-data`` section has configuration options, but they don't
+  do anything right now (`PY-504
+  <https://jira.ncbi.nlm.nih.gov/browse/PY-504>`_).
+
 
 Further Development
 -------------------
@@ -470,3 +596,9 @@ Further Development
 .. _public version identifier: https://www.python.org/dev/peps/pep-0440/#public-version-identifiers
 .. _local version identifier: https://www.python.org/dev/peps/pep-0440/#local-version-identifiers
 .. _string format expression: https://docs.python.org/2/library/string.html#string-formatting
+.. [#activation] Unlike ``source env/bin/activate``, this does not change the
+        ``$PATH`` or set ``$VIRTUAL_ENV``, so there are a few rare
+        circumstances where it's not good enough: if your script needs to start
+        another script using ``subprocess`` or ``popen``, or if it tries to
+        access data using a path relative to ``$VIRTUAL_ENV``. Take a look at
+        ``env/bin/activate_this.py`` if you encounter this problem.
