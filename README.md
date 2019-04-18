@@ -433,7 +433,7 @@ Scripts need to be treated specially, and not just dropped into `bin`
 using `data_files`, because Python changes the shebang (`#!`) line to
 match the virtualenv's python interpreter. This means you can directly
 run a script without activating a virtualenv - e.g. `env/bin/pip install
-attrs` will work even if `env` isn't activated.[^1]
+attrs` will work even if `env` isn't activated.\[1\]
 
 If you have some scripts already, the easiest thing is to collect them
 in one directory, then use `scripts`:
@@ -517,7 +517,7 @@ include both the `.pyx` file and the `.c` file it's translated to.
 
 <!-- end list -->
 
-[^1]:  Unlike `source env/bin/activate`, this does not change the `$PATH`
+1.  Unlike `source env/bin/activate`, this does not change the `$PATH`
     or set `$VIRTUAL_ENV`, so there are a few rare circumstances where
     it's not good enough: if your script needs to start another script
     using `subprocess` or `popen`, or if it tries to access data using a
